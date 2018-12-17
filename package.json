@@ -1,0 +1,19 @@
+{
+  "name": "azurefunction-node",
+  "version": "0.0.1",
+  "description": "Mock web service implemented using Azure Function",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/azam-a/azurefunction-node.git"
+  },
+  "author": "Azam Alias",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/azam-a/azurefunction-node/issues"
+  },
+  "homepage": "https://github.com/azam-a/azurefunction-node#readme"
+}
