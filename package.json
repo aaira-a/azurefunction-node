@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/azam-a/azurefunction-node/issues"
   },
-  "homepage": "https://github.com/azam-a/azurefunction-node#readme"
+  "homepage": "https://github.com/azam-a/azurefunction-node#readme",
+  "dependencies": {
+    "azure-function-express": "^2.0.0",
+    "express": "^4.16.4"
+  }
 }
