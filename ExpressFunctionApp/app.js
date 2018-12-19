@@ -1,17 +1,14 @@
 const express = require("express");
+const path = require("path");
 const app = express();
 
-app.get("/api/:foo", (req, res) => {
+
+app.get("/api/hello", (req, res) => {
   res.json({
-    foo: req.params.foo
+    "hello": "world"
   })
 });
 
-app.get("/api/:foo/:bar", (req, res) => {
-  res.json({
-    foo: req.params.foo,
-    bar: req.params.bar
-  })
-});
+app.use('/api/docs', express.static(path.join(__dirname, 'docs')));
 
 module.exports = app;
