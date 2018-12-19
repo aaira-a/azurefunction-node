@@ -1,4 +1,5 @@
 const express = require("express");
+const jsonfile = require("jsonfile");
 const path = require("path");
 const app = express();
 
@@ -9,6 +10,16 @@ app.get("/api/hello", (req, res) => {
   })
 });
 
-app.use('/api/docs', express.static(path.join(__dirname, 'docs')));
+app.get('/api/docs/:requestPath', (req, res) => {
+  let requestPath = req.params.requestPath;
+  let file = path.join(__dirname + '/docs/' + requestPath);
+
+  jsonfile.readFile(file, (err, obj) => {
+    if(err) {
+      res.status(404);
+    }
+    res.json(obj);
+  });
+});
 
 module.exports = app;
