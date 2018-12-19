@@ -10,7 +10,7 @@ describe('GET /api/hello', () => {
     return request(app)
       .get('/api/hello')
       .then((response) => {
-        assert.equal(response.status, 200)
+        expect(response.status).to.eql(200)
       })
   });
 
@@ -18,7 +18,7 @@ describe('GET /api/hello', () => {
     return request(app)
       .get('/api/hello')
       .then((response) => {
-        assert.deepEqual(response.body, {"hello": "world"})
+        expect(response.body).to.eql({"hello": "world"});
         expect(response.headers['content-type']).to.include('application/json');
       })
   });
@@ -32,7 +32,7 @@ describe('GET /api/docs/', () => {
     return request(app)
       .get('/api/docs/swagger.json')
       .then((response) => {
-        assert.equal(response.status, 200)
+        expect(response.status).to.eql(200)
       })
   });
 
@@ -40,7 +40,7 @@ describe('GET /api/docs/', () => {
     return request(app)
       .get('/api/docs/doesnexist.json')
       .then((response) => {
-        assert.equal(response.status, 404)
+        expect(response.status).to.eql(404)
       })
   });
 
@@ -52,7 +52,7 @@ describe('GET /api/echo', () => {
     return request(app)
       .get('/api/echo')
       .then((response) => {
-        assert.equal(response.status, 200)
+        expect(response.status).to.eql(200)
       })
   });
 
@@ -62,8 +62,8 @@ describe('GET /api/echo', () => {
       .set('Custom-Echo-Header', 'Random-Value-123')
       .set('Another-Echo-Header', 'My value 456')
       .then((response) => {
-        assert.equal(response.body['echo-headers']['custom-echo-header'], 'Random-Value-123');
-        assert.equal(response.body['echo-headers']['another-echo-header'], 'My value 456');
+        expect(response.body['echo-headers']['custom-echo-header']).to.eql('Random-Value-123');
+        expect(response.body['echo-headers']['another-echo-header']).to.eql('My value 456');
       })
   });
 
