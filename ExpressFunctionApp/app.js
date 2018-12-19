@@ -23,7 +23,12 @@ app.get('/api/docs/:requestPath', (req, res) => {
 });
 
 app.get('/api/echo', (req, res) => {
-  res.json({"echo-headers": req.headers});
+  let response = {};
+
+  response["echo-headers"] = req.headers;
+  response["echo-qs"] = req.query;
+
+  res.json(response);
 })
 
 module.exports = app;

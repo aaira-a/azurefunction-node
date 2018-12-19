@@ -75,4 +75,13 @@ describe('GET /api/echo', () => {
       })
   });
 
+  it('should return query strings in echo-qs object', () => {
+    return request(app)
+      .get('/api/echo?abc=def&ghi=jkl')
+      .then((response) => {
+        expect(response.body['echo-qs']['abc']).to.eql('def');
+        expect(response.body['echo-qs']['ghi']).to.eql('jkl');
+      })
+  });
+
 });
