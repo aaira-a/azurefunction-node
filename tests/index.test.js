@@ -46,7 +46,7 @@ describe('GET /api/docs/', () => {
 
 });
 
-describe('GET /api/echo', () => {
+describe('ALL /api/echo', () => {
 
   it('should return 200 status', () => {
     return request(app)
@@ -82,6 +82,16 @@ describe('GET /api/echo', () => {
         expect(response.body['echo-qs']['abc']).to.eql('def');
         expect(response.body['echo-qs']['ghi']).to.eql('jkl');
       })
+  });
+
+  ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'].forEach((method) => {
+    it('should return ' + method + ' method in echo-method key', () => {
+      return request(app)
+        [method.toLowerCase()]('/api/echo')
+        .then((response) => {
+          expect(response.body['echo-method']).to.eql(method);
+        })
+    });
   });
 
 });

@@ -22,9 +22,10 @@ app.get('/api/docs/:requestPath', (req, res) => {
   });
 });
 
-app.get('/api/echo', (req, res) => {
+app.all('/api/echo', (req, res) => {
   let response = {};
 
+  response["echo-method"] = req.method;
   response["echo-headers"] = req.headers;
   response["echo-qs"] = req.query;
 
