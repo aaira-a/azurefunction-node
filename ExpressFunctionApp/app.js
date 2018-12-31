@@ -44,4 +44,14 @@ app.all('/api/echo', (req, res) => {
   res.json(response);
 })
 
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError) {
+    let response = {};
+    response['error'] = err;
+    res.status(400).json(response);
+  } else {
+    next();
+  }
+});
+
 module.exports = app;

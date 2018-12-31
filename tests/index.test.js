@@ -103,7 +103,16 @@ describe('ALL /api/echo', () => {
       .then((response) => {
         expect(response.body['echo-body-content-type']).to.include('application/vnd.api+json');
         expect(response.body['echo-body']).to.eql({'key1': 'value1', 'key2': 'value2'});
-        
+      })
+  });
+
+  it('should return 400 status for malformed json request body', () => {
+    return request(app)
+      .post('/api/echo')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send('{"key1":}')
+      .then((response) => {
+        expect(response.body['error']['body']).to.eql('{\"key1\":}');
       })
   });
 });
