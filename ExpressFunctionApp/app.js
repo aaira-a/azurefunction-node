@@ -1,9 +1,11 @@
 const express = require("express");
 const jsonfile = require("jsonfile");
+const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.text());
 
 app.get("/api/hello", (req, res) => {
   res.json({
@@ -30,6 +32,14 @@ app.all('/api/echo', (req, res) => {
   response["echo-headers"] = req.headers;
   response["echo-qs"] = req.query;
   response["echo-body"] = req.body;
+
+  if (req.headers.hasOwnProperty("content-type")) {
+    response["echo-body-content-type"] = req.headers["content-type"]
+  }
+
+  if (req.hasOwnProperty("body")) {
+    response["echo-body"] = req.body;
+  }
 
   res.json(response);
 })

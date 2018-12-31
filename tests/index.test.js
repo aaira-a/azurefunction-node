@@ -95,12 +95,27 @@ describe('ALL /api/echo', () => {
   });
 
 
-  it('should return request body in echo-body object', () => {
+  it('should return json request body in echo-body object', () => {
     return request(app)
       .post('/api/echo')
+      .set('Content-Type', 'application/json')
       .send({'key1': 'value1', 'key2': 'value2'})
       .then((response) => {
-        expect(response.body['echo-body']).to.eql({'key1': 'value1', 'key2': 'value2'})
+        expect(response.body['echo-body-content-type']).to.include('application/json');
+        expect(response.body['echo-body']).to.eql({'key1': 'value1', 'key2': 'value2'});
+        
+      })
+  });
+
+  it('should return text request body in echo-body object', () => {
+    return request(app)
+      .post('/api/echo')
+      .set('Content-Type', 'text/plain')
+      .send('abc')
+      .then((response) => {
+        expect(response.body['echo-body-content-type']).to.include('text/plain');
+        expect(response.body['echo-body']).to.eql('abc');
+        
       })
   });
 });

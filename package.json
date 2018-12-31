@@ -18,6 +18,7 @@
   "homepage": "https://github.com/azam-a/azurefunction-node#readme",
   "dependencies": {
     "azure-function-express": "^2.0.0",
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "jsonfile": "^5.0.0"
   },
