@@ -7,6 +7,7 @@ const app = express();
 // Workaround for Azure Function as discussed in GitHub issue
 // https://github.com/yvele/azure-function-express/issues/15
 app.use(bodyParser.json({ type: 'application/*+json' }));
+app.use(bodyParser.text({ type: 'text/*' }));
 
 app.get("/api/hello", (req, res) => {
   res.json({

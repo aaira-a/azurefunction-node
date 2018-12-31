@@ -106,4 +106,16 @@ describe('ALL /api/echo', () => {
         
       })
   });
+
+  it('should return text request body in echo-body object', () => {
+    return request(app)
+      .post('/api/echo')
+      .set('Content-Type', 'text/plain')
+      .send('abc')
+      .then((response) => {
+        expect(response.body['echo-body-content-type']).to.include('text/plain');
+        expect(response.body['echo-body']).to.eql('abc');
+        
+      })
+  });
 });
