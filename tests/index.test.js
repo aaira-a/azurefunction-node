@@ -94,4 +94,13 @@ describe('ALL /api/echo', () => {
     });
   });
 
+
+  it('should return request body in echo-body object', () => {
+    return request(app)
+      .post('/api/echo')
+      .send({'key1': 'value1', 'key2': 'value2'})
+      .then((response) => {
+        expect(response.body['echo-body']).to.eql({'key1': 'value1', 'key2': 'value2'})
+      })
+  });
 });

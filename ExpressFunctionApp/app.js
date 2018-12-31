@@ -3,6 +3,7 @@ const jsonfile = require("jsonfile");
 const path = require("path");
 const app = express();
 
+app.use(express.json());
 
 app.get("/api/hello", (req, res) => {
   res.json({
@@ -28,6 +29,7 @@ app.all('/api/echo', (req, res) => {
   response["echo-method"] = req.method;
   response["echo-headers"] = req.headers;
   response["echo-qs"] = req.query;
+  response["echo-body"] = req.body;
 
   res.json(response);
 })
