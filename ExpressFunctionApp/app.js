@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/*+json' }));
 app.use(bodyParser.text());
 
 app.get("/api/hello", (req, res) => {
