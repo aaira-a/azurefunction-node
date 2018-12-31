@@ -4,8 +4,9 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
+// Workaround for Azure Function as discussed in GitHub issue
+// https://github.com/yvele/azure-function-express/issues/15
 app.use(bodyParser.json({ type: 'application/*+json' }));
-app.use(bodyParser.text());
 
 app.get("/api/hello", (req, res) => {
   res.json({
@@ -31,7 +32,6 @@ app.all('/api/echo', (req, res) => {
   response["echo-method"] = req.method;
   response["echo-headers"] = req.headers;
   response["echo-qs"] = req.query;
-  response["echo-body"] = req.body;
 
   if (req.headers.hasOwnProperty("content-type")) {
     response["echo-body-content-type"] = req.headers["content-type"]
