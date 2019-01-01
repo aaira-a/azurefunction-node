@@ -46,7 +46,7 @@ describe('GET /api/docs/', () => {
 
 });
 
-describe('ALL /api/echo', () => {
+describe('ALL /api/echo/:status?', () => {
 
   it('should return 200 status', () => {
     return request(app)
@@ -114,5 +114,15 @@ describe('ALL /api/echo', () => {
       .then((response) => {
         expect(response.body['error']['body']).to.eql('{\"key1\":}');
       })
+  });
+
+  [200, 400, 401, 403, 404, 405, 410, 500, 502, 503, 504].forEach((status) => {
+    it('should return ' + status + ' status if supplied in route parameter', () => {
+      return request(app)
+        .post('/api/echo/' + status.toString())
+        .then((response) => {
+          expect(response.status).to.eql(status);
+        })
+    });
   });
 });

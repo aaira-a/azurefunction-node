@@ -26,7 +26,7 @@ app.get('/api/docs/:requestPath', (req, res) => {
   });
 });
 
-app.all('/api/echo', (req, res) => {
+app.all('/api/echo/:status?', (req, res) => {
   let response = {};
 
   response["echo-method"] = req.method;
@@ -41,6 +41,9 @@ app.all('/api/echo', (req, res) => {
     response["echo-body"] = req.body;
   }
 
+  if (req.params.status !== undefined) {
+    res.status(req.params.status).json(response);
+  }
   res.json(response);
 })
 
