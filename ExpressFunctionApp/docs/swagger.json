@@ -1,3 +1,74 @@
 {
-  "key1": "value1"
+  "swagger": "2.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "Az Function Mock Web Service",
+    "description": "Azure Function Mock Web Service"
+  },
+  "host": "azamwebsvc.azurewebsites.net",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/docs/swagger.json": {
+      "get": {
+        "summary": "Get this Swagger 2.0 definition",
+        "description": "Get this Swagger 2.0 definition",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/echo/{status}": {
+      "post": {
+        "summary": "Echoes back request",
+        "description": "Echoes headers, querystring, and request body",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "status",
+            "description": "Status code to be returned",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "echoRequest",
+            "description": "Request body to be echoed",
+            "schema": {
+              "$ref": "#/definitions/echoRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/echoResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "echoRequest": {
+      "type": "object"
+    },
+    "echoResponse": {
+      "type": "object"
+    }
+  }
 }
