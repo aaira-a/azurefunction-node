@@ -101,10 +101,10 @@
         "parameters": [
           {
             "in": "body",
-            "name": "allTypesInputs",
+            "name": "rootBody",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/allTypesInputs"
+              "$ref": "#/definitions/rootBody"
             }
           }
         ],
@@ -126,37 +126,42 @@
     "echoResponse": {
       "type": "object"
     },
-    "allTypesInputs": {
+    "rootBody": {
       "type": "object",
       "properties": {
-        "textInput": {
-          "type": "string",
-          "description": "Text Input"
-        },
-        "decimalInput": {
-          "type": "number",
-          "description": "Decimal Input"
-        },
-        "integerInput": {
-          "type": "integer",
-          "description": "Integer Input"
-        },
-        "booleanInput": {
-          "type": "boolean",
-          "description": "Boolean Input"
-        },
-        "datetimeInput": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Datetime Input"
-        },
-        "collectionInput": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "description": "Collection Item Input"
-          },
-          "description": "Collection Input"
+        "allTypesInputs": {
+          "type": "object",
+          "properties": {
+            "textInput": {
+              "type": "string",
+              "description": "Text Input"
+            },
+            "decimalInput": {
+              "type": "number",
+              "description": "Decimal Input"
+            },
+            "integerInput": {
+              "type": "integer",
+              "description": "Integer Input"
+            },
+            "booleanInput": {
+              "type": "boolean",
+              "description": "Boolean Input"
+            },
+            "datetimeInput": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Datetime Input"
+            },
+            "collectionInput": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Collection Item Input"
+              },
+              "description": "Collection Input"
+            }
+          }
         }
       }
     },
