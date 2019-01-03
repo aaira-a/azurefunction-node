@@ -163,34 +163,42 @@
     "allTypesOutputs": {
       "type": "object",
       "properties": {
-        "textOutput": {
-          "type": "string",
-          "description": "Text Output"
+        "inputs": {
+          "type": "object"
         },
-        "decimalOutput": {
-          "type": "number",
-          "description": "Decimal Output"
-        },
-        "integerOutput": {
-          "type": "integer",
-          "description": "Integer Output"
-        },
-        "booleanOutput": {
-          "type": "boolean",
-          "description": "Boolean Output"
-        },
-        "datetimeOutput": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Datetime Output"
-        },
-        "collectionOutput": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "description": "Collection Item Output"
-          },
-          "description": "Collection Output"
+        "outputs": {
+          "type": "object",
+          "properties": {
+            "textOutput": {
+              "type": "string",
+              "description": "Text Output"
+            },
+            "decimalOutput": {
+              "type": "number",
+              "description": "Decimal Output"
+            },
+            "integerOutput": {
+              "type": "integer",
+              "description": "Integer Output"
+            },
+            "booleanOutput": {
+              "type": "boolean",
+              "description": "Boolean Output"
+            },
+            "datetimeOutput": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Datetime Output"
+            },
+            "collectionOutput": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Collection Item Output"
+              },
+              "description": "Collection Output"
+            }
+          }
         }
       }
     }

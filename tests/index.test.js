@@ -139,13 +139,46 @@ describe('GET /api/files/errors/:status', () => {
 });
 
 describe('POST /api/all-types', () => {
+
+  it('should return request headers in inputs object, downcased keys', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .set('Custom-Echo-Header', 'Random-Value-123')
+      .set('Another-Echo-Header', 'My value 456')
+      .then((response) => {
+        expect(response.body['inputs']['headers']['custom-echo-header']).to.eql('Random-Value-123');
+        expect(response.body['inputs']['headers']['another-echo-header']).to.eql('My value 456');
+      })
+  });
+
+  it('should return request body in outputs object', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'any': {'key1': 'value1'}})
+      .then((response) => {
+        expect(response.body['inputs']['body']).to.eql({'any': {'key1': 'value1'}});
+      })
+  });
+
+  it('should return json response', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send()
+      .then((response) => {
+        expect(response.headers['content-type']).to.include('application/json');
+      })
+  });  
+
   it('should return text output', () => {
     return request(app)
       .post('/api/all-types')
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'textInput': 'abc'}})
       .then((response) => {
-        expect(response.body['textOutput']).to.eql('abc')
+        expect(response.body['outputs']['textOutput']).to.eql('abc')
       })
   });
 
@@ -155,7 +188,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'textInput': ''}})
       .then((response) => {
-        expect(response.body['textOutput']).to.eql('')
+        expect(response.body['outputs']['textOutput']).to.eql('')
       })
   });
 
@@ -165,7 +198,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'textInput': null}})
       .then((response) => {
-        expect(response.body['textOutput']).to.eql(null)
+        expect(response.body['outputs']['textOutput']).to.eql(null)
       })
   });
 
@@ -175,7 +208,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'decimalInput': 123.45}})
       .then((response) => {
-        expect(response.body['decimalOutput']).to.eql(123.45)
+        expect(response.body['outputs']['decimalOutput']).to.eql(123.45)
       })
   });
 
@@ -185,7 +218,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'decimalInput': 42}})
       .then((response) => {
-        expect(response.body['decimalOutput']).to.eql(42)
+        expect(response.body['outputs']['decimalOutput']).to.eql(42)
       })
   });
 
@@ -195,7 +228,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'decimalInput': null}})
       .then((response) => {
-        expect(response.body['decimalOutput']).to.eql(null)
+        expect(response.body['outputs']['decimalOutput']).to.eql(null)
       })
   });
 
@@ -205,7 +238,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'integerInput': -789}})
       .then((response) => {
-        expect(response.body['integerOutput']).to.eql(-789)
+        expect(response.body['outputs']['integerOutput']).to.eql(-789)
       })
   });
 
@@ -215,7 +248,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'integerInput': 67.89}})
       .then((response) => {
-        expect(response.body['integerOutput']).to.eql(67.89)
+        expect(response.body['outputs']['integerOutput']).to.eql(67.89)
       })
   });
 
@@ -225,7 +258,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'integerInput': null}})
       .then((response) => {
-        expect(response.body['integerOutput']).to.eql(null)
+        expect(response.body['outputs']['integerOutput']).to.eql(null)
       })
   });
 
@@ -235,7 +268,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'booleanInput': true}})
       .then((response) => {
-        expect(response.body['booleanOutput']).to.eql(true)
+        expect(response.body['outputs']['booleanOutput']).to.eql(true)
       })
   });
 
@@ -245,7 +278,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'booleanInput': false}})
       .then((response) => {
-        expect(response.body['booleanOutput']).to.eql(false)
+        expect(response.body['outputs']['booleanOutput']).to.eql(false)
       })
   });
 
@@ -255,7 +288,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'booleanInput': null}})
       .then((response) => {
-        expect(response.body['booleanOutput']).to.eql(null)
+        expect(response.body['outputs']['booleanOutput']).to.eql(null)
       })
   });
 
@@ -265,7 +298,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'booleanInput': 'true'}})
       .then((response) => {
-        expect(response.body['booleanOutput']).to.eql(null)
+        expect(response.body['outputs']['booleanOutput']).to.eql(null)
       })
   });
 
@@ -275,7 +308,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'datetimeInput': '2017-07-21T17:32:28Z'}})
       .then((response) => {
-        expect(response.body['datetimeOutput']).to.eql('2017-07-21T17:32:28Z')
+        expect(response.body['outputs']['datetimeOutput']).to.eql('2017-07-21T17:32:28Z')
       })
   });
 
@@ -285,7 +318,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'datetimeInput': '2017-07-21T17:32:28+0800'}})
       .then((response) => {
-        expect(response.body['datetimeOutput']).to.eql('2017-07-21T17:32:28+0800')
+        expect(response.body['outputs']['datetimeOutput']).to.eql('2017-07-21T17:32:28+0800')
       })
   });
 
@@ -295,7 +328,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'datetimeInput': null}})
       .then((response) => {
-        expect(response.body['datetimeOutput']).to.eql(null)
+        expect(response.body['outputs']['datetimeOutput']).to.eql(null)
       })
   });
 
@@ -305,7 +338,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'collectionInput': ['abc', 'def', 'ghi']}})
       .then((response) => {
-        expect(response.body['collectionOutput']).to.eql(['abc', 'def', 'ghi'])
+        expect(response.body['outputs']['collectionOutput']).to.eql(['abc', 'def', 'ghi'])
       })
   });
 
@@ -315,7 +348,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'collectionInput': []}})
       .then((response) => {
-        expect(response.body['collectionOutput']).to.eql([])
+        expect(response.body['outputs']['collectionOutput']).to.eql([])
       })
   });
 
@@ -325,7 +358,7 @@ describe('POST /api/all-types', () => {
       .set('Content-Type', 'application/vnd.api+json')
       .send({'allTypesInputs': {'collectionInput': 'abc'}})
       .then((response) => {
-        expect(response.body['collectionOutput']).to.eql(null)
+        expect(response.body['outputs']['collectionOutput']).to.eql(null)
       })
   });
 });

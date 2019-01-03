@@ -53,38 +53,45 @@ app.get('/api/files/errors/:status', (req, res) => {
 
 app.post('/api/all-types', (req, res) => {
   let response = {};
+
+  response["inputs"] = {};
+  response["inputs"]["headers"] = req.headers;
+  response["inputs"]["body"] = req.body
+
+  response["outputs"] = {};
+
   if (req.hasOwnProperty("body") && req["body"].hasOwnProperty("allTypesInputs")) {
     if (req.body["allTypesInputs"].hasOwnProperty("textInput")) {
-      response["textOutput"] = req.body["allTypesInputs"]["textInput"];
+      response["outputs"]["textOutput"] = req.body["allTypesInputs"]["textInput"];
     }
 
     if (req.body["allTypesInputs"].hasOwnProperty("decimalInput")) {
-      response["decimalOutput"] = req.body["allTypesInputs"]["decimalInput"];
+      response["outputs"]["decimalOutput"] = req.body["allTypesInputs"]["decimalInput"];
     }
 
     if (req.body["allTypesInputs"].hasOwnProperty("integerInput")) {
-      response["integerOutput"] = req.body["allTypesInputs"]["integerInput"];
+      response["outputs"]["integerOutput"] = req.body["allTypesInputs"]["integerInput"];
     }
 
     if (req.body["allTypesInputs"].hasOwnProperty("booleanInput")) {
       if (typeof req.body["allTypesInputs"]["booleanInput"] === 'boolean') {
-        response["booleanOutput"] = req.body["allTypesInputs"]["booleanInput"];
+        response["outputs"]["booleanOutput"] = req.body["allTypesInputs"]["booleanInput"];
       }
       else {
-        response["booleanOutput"] = null;
+        response["outputs"]["booleanOutput"] = null;
       }
     }
 
     if (req.body["allTypesInputs"].hasOwnProperty("datetimeInput")) {
-      response["datetimeOutput"] = req.body["allTypesInputs"]["datetimeInput"];
+      response["outputs"]["datetimeOutput"] = req.body["allTypesInputs"]["datetimeInput"];
     }
 
     if (req.body["allTypesInputs"].hasOwnProperty("collectionInput")) {
       if (req.body["allTypesInputs"]["collectionInput"] instanceof Array) {
-        response["collectionOutput"] = req.body["allTypesInputs"]["collectionInput"];
+        response["outputs"]["collectionOutput"] = req.body["allTypesInputs"]["collectionInput"];
       }
       else {
-        response["collectionOutput"] = null;
+        response["outputs"]["collectionOutput"] = null;
       }
     }
   }
