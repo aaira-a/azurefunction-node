@@ -137,3 +137,195 @@ describe('GET /api/files/errors/:status', () => {
     });
   });
 });
+
+describe('POST /api/all-types', () => {
+  it('should return text output', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'textInput': 'abc'}})
+      .then((response) => {
+        expect(response.body['textOutput']).to.eql('abc')
+      })
+  });
+
+  it('should return empty string for empty text input', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'textInput': ''}})
+      .then((response) => {
+        expect(response.body['textOutput']).to.eql('')
+      })
+  });
+
+  it('should return null for null text input', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'textInput': null}})
+      .then((response) => {
+        expect(response.body['textOutput']).to.eql(null)
+      })
+  });
+
+  it('should return decimal output', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'decimalInput': 123.45}})
+      .then((response) => {
+        expect(response.body['decimalOutput']).to.eql(123.45)
+      })
+  });
+
+  it('should not add decimal points for round decimal input', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'decimalInput': 42}})
+      .then((response) => {
+        expect(response.body['decimalOutput']).to.eql(42)
+      })
+  });
+
+  it('should return null for null decimal input', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'decimalInput': null}})
+      .then((response) => {
+        expect(response.body['decimalOutput']).to.eql(null)
+      })
+  });
+
+  it('should return integer output', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'integerInput': -789}})
+      .then((response) => {
+        expect(response.body['integerOutput']).to.eql(-789)
+      })
+  });
+
+  it('should preserve decimals if sent for integer input', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'integerInput': 67.89}})
+      .then((response) => {
+        expect(response.body['integerOutput']).to.eql(67.89)
+      })
+  });
+
+  it('should return null for null integer input', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'integerInput': null}})
+      .then((response) => {
+        expect(response.body['integerOutput']).to.eql(null)
+      })
+  });
+
+  it('should return true boolean output', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'booleanInput': true}})
+      .then((response) => {
+        expect(response.body['booleanOutput']).to.eql(true)
+      })
+  });
+
+  it('should return false boolean output', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'booleanInput': false}})
+      .then((response) => {
+        expect(response.body['booleanOutput']).to.eql(false)
+      })
+  });
+
+  it('should return null for null boolean input', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'booleanInput': null}})
+      .then((response) => {
+        expect(response.body['booleanOutput']).to.eql(null)
+      })
+  });
+
+  it('should return null for incorrect boolean input', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'booleanInput': 'true'}})
+      .then((response) => {
+        expect(response.body['booleanOutput']).to.eql(null)
+      })
+  });
+
+  it('should return datetime output with ISO 8601 Z format', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'datetimeInput': '2017-07-21T17:32:28Z'}})
+      .then((response) => {
+        expect(response.body['datetimeOutput']).to.eql('2017-07-21T17:32:28Z')
+      })
+  });
+
+  it('should return datetime output with ISO 8601 and time offset format', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'datetimeInput': '2017-07-21T17:32:28+0800'}})
+      .then((response) => {
+        expect(response.body['datetimeOutput']).to.eql('2017-07-21T17:32:28+0800')
+      })
+  });
+
+  it('should return null for null datetime input', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'datetimeInput': null}})
+      .then((response) => {
+        expect(response.body['datetimeOutput']).to.eql(null)
+      })
+  });
+
+  it('should return collection output', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'collectionInput': ['abc', 'def', 'ghi']}})
+      .then((response) => {
+        expect(response.body['collectionOutput']).to.eql(['abc', 'def', 'ghi'])
+      })
+  });
+
+  it('should return empty collection for empty collection input', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'collectionInput': []}})
+      .then((response) => {
+        expect(response.body['collectionOutput']).to.eql([])
+      })
+  });
+
+  it('should return null for non-collection input', () => {
+    return request(app)
+      .post('/api/all-types')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({'allTypesInputs': {'collectionInput': 'abc'}})
+      .then((response) => {
+        expect(response.body['collectionOutput']).to.eql(null)
+      })
+  });
+});

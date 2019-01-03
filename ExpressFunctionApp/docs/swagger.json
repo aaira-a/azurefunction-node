@@ -93,6 +93,30 @@
           }
         }
       }
+    },
+    "/all-types": {
+      "post": {
+        "summary": "POST all variable types",
+        "description": "POST all variable types",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "allTypesInputs",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/allTypesInputs"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/allTypesOutputs"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -101,6 +125,74 @@
     },
     "echoResponse": {
       "type": "object"
+    },
+    "allTypesInputs": {
+      "type": "object",
+      "properties": {
+        "textInput": {
+          "type": "string",
+          "description": "Text Input"
+        },
+        "decimalInput": {
+          "type": "number",
+          "description": "Decimal Input"
+        },
+        "integerInput": {
+          "type": "integer",
+          "description": "Integer Input"
+        },
+        "booleanInput": {
+          "type": "boolean",
+          "description": "Boolean Input"
+        },
+        "datetimeInput": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Datetime Input"
+        },
+        "collectionInput": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Collection Item Input"
+          },
+          "description": "Collection Input"
+        }
+      }
+    },
+    "allTypesOutputs": {
+      "type": "object",
+      "properties": {
+        "textOutput": {
+          "type": "string",
+          "description": "Text Output"
+        },
+        "decimalOutput": {
+          "type": "number",
+          "description": "Decimal Output"
+        },
+        "integerOutput": {
+          "type": "integer",
+          "description": "Integer Output"
+        },
+        "booleanOutput": {
+          "type": "boolean",
+          "description": "Boolean Output"
+        },
+        "datetimeOutput": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Datetime Output"
+        },
+        "collectionOutput": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Collection Item Output"
+          },
+          "description": "Collection Output"
+        }
+      }
     }
   }
 }

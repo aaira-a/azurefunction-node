@@ -51,6 +51,46 @@ app.get('/api/files/errors/:status', (req, res) => {
   res.status(req.params.status).send();
 });
 
+app.post('/api/all-types', (req, res) => {
+  let response = {};
+  if (req.hasOwnProperty("body") && req["body"].hasOwnProperty("allTypesInputs")) {
+    if (req.body["allTypesInputs"].hasOwnProperty("textInput")) {
+      response["textOutput"] = req.body["allTypesInputs"]["textInput"];
+    }
+
+    if (req.body["allTypesInputs"].hasOwnProperty("decimalInput")) {
+      response["decimalOutput"] = req.body["allTypesInputs"]["decimalInput"];
+    }
+
+    if (req.body["allTypesInputs"].hasOwnProperty("integerInput")) {
+      response["integerOutput"] = req.body["allTypesInputs"]["integerInput"];
+    }
+
+    if (req.body["allTypesInputs"].hasOwnProperty("booleanInput")) {
+      if (typeof req.body["allTypesInputs"]["booleanInput"] === 'boolean') {
+        response["booleanOutput"] = req.body["allTypesInputs"]["booleanInput"];
+      }
+      else {
+        response["booleanOutput"] = null;
+      }
+    }
+
+    if (req.body["allTypesInputs"].hasOwnProperty("datetimeInput")) {
+      response["datetimeOutput"] = req.body["allTypesInputs"]["datetimeInput"];
+    }
+
+    if (req.body["allTypesInputs"].hasOwnProperty("collectionInput")) {
+      if (req.body["allTypesInputs"]["collectionInput"] instanceof Array) {
+        response["collectionOutput"] = req.body["allTypesInputs"]["collectionInput"];
+      }
+      else {
+        response["collectionOutput"] = null;
+      }
+    }
+  }
+  res.json(response);
+});
+
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError) {
     let response = {};
