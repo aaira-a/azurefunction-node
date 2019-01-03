@@ -61,6 +61,38 @@
           }
         }
       }
+    },
+    "/files/errors/{status}": {
+      "get": {
+        "summary": "Download error",
+        "description": "Returns error code instead of image for download",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "status",
+            "description": "Error status code to be returned",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "images/jpeg"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "file": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {

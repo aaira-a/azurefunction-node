@@ -47,6 +47,10 @@ app.all('/api/echo/:status?', (req, res) => {
   res.json(response);
 })
 
+app.get('/api/files/errors/:status', (req, res) => {
+  res.status(req.params.status).send();
+});
+
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError) {
     let response = {};
