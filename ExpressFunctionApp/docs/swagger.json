@@ -134,24 +134,29 @@
           "properties": {
             "textInput": {
               "type": "string",
-              "description": "Text Input"
+              "description": "Text Input",
+              "x-ntx-summary": "Text Input"
             },
             "decimalInput": {
               "type": "number",
-              "description": "Decimal Input"
+              "description": "Decimal Input",
+              "x-ntx-summary": "Decimal Input"
             },
             "integerInput": {
               "type": "integer",
-              "description": "Integer Input"
+              "description": "Integer Input",
+              "x-ntx-summary": "Integer Input"
             },
             "booleanInput": {
               "type": "boolean",
-              "description": "Boolean Input"
+              "description": "Boolean Input",
+              "x-ntx-summary": "Boolean Input"
             },
             "datetimeInput": {
               "type": "string",
               "format": "date-time",
-              "description": "Datetime Input"
+              "description": "Datetime Input",
+              "x-ntx-summary": "Datetime Input"
             },
             "collectionInput": {
               "type": "array",
@@ -159,7 +164,8 @@
                 "type": "string",
                 "description": "Collection Item Input"
               },
-              "description": "Collection Input"
+              "description": "Collection Input",
+              "x-ntx-summary": "Collection Input"
             }
           }
         }
@@ -169,31 +175,38 @@
       "type": "object",
       "properties": {
         "inputs": {
-          "type": "object"
+          "type": "object",
+          "description": "Logged Request Inputs",
+          "x-ntx-summary": "Logged Request Inputs"
         },
         "outputs": {
           "type": "object",
           "properties": {
             "textOutput": {
               "type": "string",
-              "description": "Text Output"
+              "description": "Text Output",
+              "x-ntx-summary": "Text Output"
             },
             "decimalOutput": {
               "type": "number",
-              "description": "Decimal Output"
+              "description": "Decimal Output",
+              "x-ntx-summary": "Decimal Output"
             },
             "integerOutput": {
               "type": "integer",
-              "description": "Integer Output"
+              "description": "Integer Output",
+              "x-ntx-summary": "Integer Output"
             },
             "booleanOutput": {
               "type": "boolean",
-              "description": "Boolean Output"
+              "description": "Boolean Output",
+              "x-ntx-summary": "Boolean Output"
             },
             "datetimeOutput": {
               "type": "string",
               "format": "date-time",
-              "description": "Datetime Output"
+              "description": "Datetime Output",
+              "x-ntx-summary": "Datetime Output"
             },
             "collectionOutput": {
               "type": "array",
@@ -201,7 +214,8 @@
                 "type": "string",
                 "description": "Collection Item Output"
               },
-              "description": "Collection Output"
+              "description": "Collection Output",
+              "x-ntx-summary": "Collection Output"
             }
           }
         }
