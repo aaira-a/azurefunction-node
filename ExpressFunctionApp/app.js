@@ -98,6 +98,12 @@ app.post('/api/all-types', (req, res) => {
   res.json(response);
 });
 
+app.get('/api/sleep', (req, res) => {
+  let response = {};
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 75000);
+  res.status(200).json({"message": "OK"});
+})
+
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError) {
     let response = {};
