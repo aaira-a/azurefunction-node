@@ -99,9 +99,9 @@ app.post('/api/all-types', (req, res) => {
 });
 
 app.get('/api/sleep', (req, res) => {
-  let response = {};
-  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 75000);
-  res.status(200).json({"message": "OK"});
+  setTimeout(() => {
+    res.status(200).json({"message": "OK"});
+  }, 75000);
 })
 
 app.use((err, req, res, next) => {
