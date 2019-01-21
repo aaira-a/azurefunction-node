@@ -117,6 +117,17 @@
           }
         }
       }
+    },
+    "/sleep": {
+      "get": {
+        "summary": "GET response after 75 seconds",
+        "description": "GET response after 75 seconds",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "definitions": {
