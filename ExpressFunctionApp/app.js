@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 
+const sleepRoute = require("./routes/sleepRoute");
+
 // Workaround for Azure Function as discussed in GitHub issue
 // https://github.com/yvele/azure-function-express/issues/15
 app.use(bodyParser.json({ type: 'application/*+json' }));
@@ -98,11 +100,7 @@ app.post('/api/all-types', (req, res) => {
   res.json(response);
 });
 
-app.get('/api/sleep', (req, res) => {
-  setTimeout(() => {
-    res.status(200).json({"message": "OK"});
-  }, 75000);
-})
+app.use('/api/sleep', sleepRoute);
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError) {
