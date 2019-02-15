@@ -100,6 +100,32 @@ app.post('/api/all-types', (req, res) => {
   res.json(response);
 });
 
+app.post('/api/all-parameter-types/:string_path/:integer_path', (req, res) => {
+  let response = {};
+
+  response["inputs"] = {};
+  response["inputs"]["headers"] = req.headers;
+  response["inputs"]["querystring"] = req.query;
+  response["inputs"]["body"] = req.body;
+
+  response["allParameterTypesOutput"] = {};
+  response["allParameterTypesOutput"]["headers"] = {
+    "string_header": req.headers["string_header"],
+    "integer_header": req.headers["integer_header"]
+  }
+
+  response["allParameterTypesOutput"]["path"] = {
+    "string-path": req.params.string_path,
+    "integer-path": req.params.integer_path
+  }
+
+  response["allParameterTypesOutput"]["querystring"] = req.query;
+
+  response["allParameterTypesOutput"]["body"] = req.body;  
+
+  res.json(response);
+});
+
 app.use('/api/sleep', sleepRoute);
 
 app.use((err, req, res, next) => {

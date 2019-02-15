@@ -118,6 +118,80 @@
         }
       }
     },
+    "/all-parameter-types/{string-path}/{integer-path}": {
+      "post": {
+        "summary": "POST all parameter types",
+        "description": "POST all parameter types",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "string_header",
+            "x-ntx-summary": "Text Header Input",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "integer_header",
+            "x-ntx-summary": "Integer Header Input",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "string-path",
+            "x-ntx-summary": "Text Path Input",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "integer-path",
+            "x-ntx-summary": "Integer Path Input",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "string_query",
+            "description": "Text Query Input",
+            "x-ntx-summary": "Text Query Input",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "integer_query",
+            "description": "Integer Query Input",
+            "x-ntx-summary": "Integer Query Input",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "string_body",
+            "description": "Request Body",
+            "x-ntx-summary": "Request Body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "description": "Text Body Input",
+                  "x-ntx-summary": "Text Body Input"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/allParameterTypesRootOutput"
+            }
+          }
+        }
+      }
+    },
     "/sleep": {
       "get": {
         "summary": "GET response after 75 seconds",
@@ -227,6 +301,76 @@
               },
               "description": "Collection Output",
               "x-ntx-summary": "Collection Output"
+            }
+          }
+        }
+      }
+    },
+    "allParameterTypesRootOutput": {
+      "type": "object",
+      "properties": {
+        "inputs": {
+          "type": "object",
+          "description": "Logged Request Inputs",
+          "x-ntx-summary": "Logged Request Inputs"
+        },
+        "allParameterTypesOutput": {
+          "type": "object",
+          "properties": {
+            "headers": {
+              "type": "object",
+              "properties": {
+                "string_header": {
+                  "type": "string",
+                  "description": "Text Header Output",
+                  "x-ntx-summary": "Text Header Output"
+                },
+                "integer_header": {
+                  "type": "integer",
+                  "description": "Integer Header Output",
+                  "x-ntx-summary": "Integer Header Output"
+                }
+              }
+            },
+            "path": {
+              "type": "object",
+              "properties": {
+                "string-path": {
+                  "type": "string",
+                  "description": "Text Path Output",
+                  "x-ntx-summary": "Text Path Output"
+                },
+                "integer-path": {
+                  "type": "integer",
+                  "description": "Integer Path Output",
+                  "x-ntx-summary": "Integer Path Output"
+                }
+              }
+            },
+            "querystring": {
+              "type": "object",
+              "properties": {
+                "string_query": {
+                  "type": "string",
+                  "description": "Text Query Output",
+                  "x-ntx-summary": "Text Query Output"
+                },
+                "integer_query": {
+                  "type": "integer",
+                  "description": "Integer Query Output",
+                  "x-ntx-summary": "Integer Query Output"
+                }
+              }
+            },
+            "body": {
+              "type": "object",
+              "properties": {
+                "string_body": {
+                  "type": "string",
+                  "description": "Text Body Output",
+                  "x-ntx-summary": "Text Body Output"
+                }
+              }
             }
           }
         }
