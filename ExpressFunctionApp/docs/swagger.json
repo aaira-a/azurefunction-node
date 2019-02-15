@@ -118,7 +118,7 @@
         }
       }
     },
-    "/all-parameter-types/{string-path}/{integer-path}": {
+    "/all-parameter-types/{string-path}/{integer-path}/{boolean-path}": {
       "post": {
         "summary": "POST all parameter types",
         "description": "POST all parameter types",
@@ -127,15 +127,19 @@
             "in": "header",
             "name": "string_header",
             "x-ntx-summary": "Text Header Input",
-            "type": "string",
-            "required": true
+            "type": "string"
           },
           {
             "in": "header",
             "name": "integer_header",
             "x-ntx-summary": "Integer Header Input",
-            "type": "integer",
-            "required": true
+            "type": "integer"
+          },
+          {
+            "in": "header",
+            "name": "boolean_header",
+            "x-ntx-summary": "Boolean Header Input",
+            "type": "boolean"
           },
           {
             "in": "path",
@@ -149,6 +153,13 @@
             "name": "integer-path",
             "x-ntx-summary": "Integer Path Input",
             "type": "integer",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "boolean-path",
+            "x-ntx-summary": "Boolean Path Input",
+            "type": "boolean",
             "required": true
           },
           {
@@ -166,6 +177,13 @@
             "type": "integer"
           },
           {
+            "in": "query",
+            "name": "boolean_query",
+            "description": "Boolean Query Input",
+            "x-ntx-summary": "boolean Query Input",
+            "type": "boolean"
+          },
+          {
             "in": "body",
             "name": "string_body",
             "description": "Request Body",
@@ -175,8 +193,8 @@
               "properties": {
                 "text": {
                   "type": "string",
-                  "description": "Text Body Input",
-                  "x-ntx-summary": "Text Body Input"
+                  "description": "Text Property Body Input",
+                  "x-ntx-summary": "Text Property Body Input"
                 }
               }
             }
@@ -329,6 +347,11 @@
                   "type": "integer",
                   "description": "Integer Header Output",
                   "x-ntx-summary": "Integer Header Output"
+                },
+                "boolean_header": {
+                  "type": "boolean",
+                  "description": "Boolean Header Output",
+                  "x-ntx-summary": "Boolean Header Output"
                 }
               }
             },
@@ -344,6 +367,11 @@
                   "type": "integer",
                   "description": "Integer Path Output",
                   "x-ntx-summary": "Integer Path Output"
+                },
+                "boolean-path": {
+                  "type": "boolean",
+                  "description": "Boolean Path Output",
+                  "x-ntx-summary": "Boolean Path Output"
                 }
               }
             },
@@ -359,16 +387,21 @@
                   "type": "integer",
                   "description": "Integer Query Output",
                   "x-ntx-summary": "Integer Query Output"
+                },
+                "boolean_query": {
+                  "type": "boolean",
+                  "description": "Boolean Query Output",
+                  "x-ntx-summary": "Boolean Query Output"
                 }
               }
             },
             "body": {
               "type": "object",
               "properties": {
-                "string_body": {
+                "text": {
                   "type": "string",
-                  "description": "Text Body Output",
-                  "x-ntx-summary": "Text Body Output"
+                  "description": "Text Property Body Output",
+                  "x-ntx-summary": "Text Property Body Output"
                 }
               }
             }

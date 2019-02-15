@@ -100,7 +100,7 @@ app.post('/api/all-types', (req, res) => {
   res.json(response);
 });
 
-app.post('/api/all-parameter-types/:string_path/:integer_path', (req, res) => {
+app.post('/api/all-parameter-types/:string_path/:integer_path/:boolean_path', (req, res) => {
   let response = {};
 
   response["inputs"] = {};
@@ -111,12 +111,14 @@ app.post('/api/all-parameter-types/:string_path/:integer_path', (req, res) => {
   response["allParameterTypesOutput"] = {};
   response["allParameterTypesOutput"]["headers"] = {
     "string_header": req.headers["string_header"],
-    "integer_header": req.headers["integer_header"]
+    "integer_header": req.headers["integer_header"],
+    "boolean_header": req.headers["boolean_header"]
   }
 
   response["allParameterTypesOutput"]["path"] = {
     "string-path": req.params.string_path,
-    "integer-path": req.params.integer_path
+    "integer-path": req.params.integer_path,
+    "boolean-path": req.params.boolean_path
   }
 
   response["allParameterTypesOutput"]["querystring"] = req.query;

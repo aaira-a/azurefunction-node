@@ -365,27 +365,32 @@ describe('POST /api/all-types', () => {
   });
 });
 
-describe('POST /api/all-parameter-types/:string_path/:integer_path', () => {
+describe('POST /api/all-parameter-types/:string_path/:integer_path/:boolean_path', () => {
   
   it('should return all parameters in output', () => {
     return request(app)
-      .post('/api/all-parameter-types/something/777?string_query=mystringquery&integer_query=666')
+      .post('/api/all-parameter-types/something/777/true?string_query=mystringquery&integer_query=666&boolean_query=true')
       .set('Content-Type', 'application/vnd.api+json')
       .set('string_header', 'this is a string header')
       .set('integer_header', '555')
+      .set('boolean_header', 'true')
       .send({'string_body': 'this is a string property'})
       .then((response) => {
         expect(response.status).to.eql(200);
         expect(response.body['allParameterTypesOutput']["querystring"])
-          .to.eql({'string_query': 'mystringquery', 'integer_query': '666'});
+          .to.eql({'string_query': 'mystringquery', 'integer_query': '666', 'boolean_query': 'true'});
         expect(response.body['allParameterTypesOutput']["headers"]["string_header"])
           .to.eql('this is a string header');
         expect(response.body['allParameterTypesOutput']["headers"]["integer_header"])
           .to.eql('555');
+        expect(response.body['allParameterTypesOutput']["headers"]["boolean_header"])
+          .to.eql('true');
         expect(response.body['allParameterTypesOutput']["path"]["string-path"])
           .to.eql('something');
         expect(response.body['allParameterTypesOutput']["path"]["integer-path"])
           .to.eql('777');
+        expect(response.body['allParameterTypesOutput']["path"]["boolean-path"])
+          .to.eql('true');
         expect(response.body['allParameterTypesOutput']['body']['string_body'])
           .to.eql('this is a string property');
       })
