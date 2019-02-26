@@ -397,6 +397,58 @@ describe('POST /api/all-parameter-types/:string_path/:integer_path/:boolean_path
   });
 });
 
+describe('POST /api/path-encoding/:text', () => {
+  
+  it('should return spaces encoded as %20', () => {
+    return request(app)
+      .post('/api/path-encoding/text%20with%20spaces')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({})
+      .then((response) => {
+        expect(response.status).to.eql(200);
+        expect(response.body['path']).to.eql('text%20with%20spaces')
+      })
+  });
+
+  it('should return spaces encoded as +', () => {
+    return request(app)
+      .post('/api/path-encoding/text+with+spaces')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({})
+      .then((response) => {
+        expect(response.status).to.eql(200);
+        expect(response.body['path']).to.eql('text+with+spaces')
+      })
+  });
+
+});
+
+describe('POST /api/query-encoding', () => {
+  
+  it('should return spaces encoded as %20', () => {
+    return request(app)
+      .post('/api/query-encoding?string_query=text%20with%20spaces')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({})
+      .then((response) => {
+        expect(response.status).to.eql(200);
+        expect(response.body['query']).to.eql('text%20with%20spaces')
+      })
+  });
+
+  it('should return spaces encoded as +', () => {
+    return request(app)
+      .post('/api/query-encoding?string_query=text+with+spaces')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send({})
+      .then((response) => {
+        expect(response.status).to.eql(200);
+        expect(response.body['query']).to.eql('text+with+spaces')
+      })
+  });
+
+});
+
 describe('GET /api/sleep', () => {
 
   let clock = null;

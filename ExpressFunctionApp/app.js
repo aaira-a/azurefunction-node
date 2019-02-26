@@ -128,6 +128,30 @@ app.post('/api/all-parameter-types/:string_path/:integer_path/:boolean_path', (r
   res.json(response);
 });
 
+app.post('/api/path-encoding/:text', (req, res) => {
+  let response = {};
+
+  response["inputs"] = {};
+  response["inputs"]["originalUrl"] = req.originalUrl;
+  response["inputs"]["headers"] = req.headers;
+  response["inputs"]["body"] = req.body;
+
+  response["path"] = req.originalUrl.replace('/api/path-encoding/', '');
+  res.json(response);
+});
+
+app.post('/api/query-encoding', (req, res) => {
+  let response = {};
+
+  response["inputs"] = {};
+  response["inputs"]["originalUrl"] = req.originalUrl;
+  response["inputs"]["headers"] = req.headers;
+  response["inputs"]["body"] = req.body;
+
+  response["query"] = req.originalUrl.replace('/api/query-encoding?string_query=', '');
+  res.json(response);
+});
+
 app.use('/api/sleep', sleepRoute);
 
 app.use((err, req, res, next) => {
