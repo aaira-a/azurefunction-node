@@ -136,7 +136,7 @@ app.post('/api/path-encoding/:text', (req, res) => {
   response["inputs"]["headers"] = req.headers;
   response["inputs"]["body"] = req.body;
 
-  response["path"] = req.originalUrl.replace('/api/path-encoding/', '');
+  response["path"] = req.originalUrl.replace(/.*\/api\/path-encoding\//g, '');
   res.json(response);
 });
 
@@ -148,7 +148,7 @@ app.post('/api/query-encoding', (req, res) => {
   response["inputs"]["headers"] = req.headers;
   response["inputs"]["body"] = req.body;
 
-  response["query"] = req.originalUrl.replace('/api/query-encoding?string_query=', '');
+  response["query"] = req.originalUrl.replace(/.*\/api\/query-encoding\?string_query=/g, '');
   res.json(response);
 });
 
