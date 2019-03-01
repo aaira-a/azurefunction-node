@@ -170,7 +170,7 @@ app.post('/api/form-urlencoded/:string_path/parsed', (req, res) => {
   response["inputs"] = {};
   response["inputs"]["originalUrl"] = req.originalUrl;
   response["inputs"]["headers"] = req.headers;
-
+  response["inputs"]["body"] = req.body;
 
   if (req.headers.hasOwnProperty("content-type") 
       && req.headers["content-type"] === 'application/x-www-form-urlencoded') {
