@@ -11,15 +11,15 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 // https://github.com/yvele/azure-function-express/issues/15
 
 // Keep raw urlencoded body to be used for testing client-side encoding
-function rawBodySaver (req, res, buf, encoding) {
-  if (buf && buf.length) {
-    req.rawBody = buf.toString(encoding || 'utf8');
-  }
-}
-app.use(bodyParser.urlencoded({
-  type: 'application/x-www-form-urlencoded',
-  verify: rawBodySaver
-}));
+// function rawBodySaver (req, res, buf, encoding) {
+//   if (buf && buf.length) {
+//     req.rawBody = buf.toString(encoding || 'utf8');
+//   }
+// }
+// app.use(bodyParser.urlencoded({
+//   type: 'application/x-www-form-urlencoded',
+//   verify: rawBodySaver
+// }));
 // https://stackoverflow.com/a/43659975
 
 app.get("/api/hello", (req, res) => {
@@ -170,7 +170,7 @@ app.post('/api/form-urlencoded/:string_path/parsed', (req, res) => {
   response["inputs"] = {};
   response["inputs"]["originalUrl"] = req.originalUrl;
   response["inputs"]["headers"] = req.headers;
-  response["inputs"]["body"] = req.body
+
 
   if (req.headers.hasOwnProperty("content-type") 
       && req.headers["content-type"] === 'application/x-www-form-urlencoded') {
