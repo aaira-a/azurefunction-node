@@ -7,8 +7,20 @@ const app = express();
 const sleepRoute = require("./routes/sleepRoute");
 
 // Workaround for Azure Function as discussed in GitHub issue
-// https://github.com/yvele/azure-function-express/issues/15
 app.use(bodyParser.json({ type: 'application/*+json' }));
+// https://github.com/yvele/azure-function-express/issues/15
+
+// Keep raw urlencoded body to be used for testing client-side encoding
+function rawBodySaver (req, res, buf, encoding) {
+  if (buf && buf.length) {
+    req.rawBody = buf.toString(encoding || 'utf8');
+  }
+}
+app.use(bodyParser.urlencoded({
+  type: 'application/x-www-form-urlencoded',
+  verify: rawBodySaver
+}));
+// https://stackoverflow.com/a/43659975
 
 app.get("/api/hello", (req, res) => {
   res.json({
@@ -149,6 +161,45 @@ app.post('/api/query-encoding', (req, res) => {
   response["inputs"]["body"] = req.body;
 
   response["query"] = req.originalUrl.replace(/.*\/api\/query-encoding\?string_query=/g, '');
+  res.json(response);
+});
+
+app.post('/api/form-urlencoded/:string_path/parsed', (req, res) => {
+  let response = {};
+
+  response["inputs"] = {};
+  response["inputs"]["originalUrl"] = req.originalUrl;
+  response["inputs"]["headers"] = req.headers;
+  response["inputs"]["body"] = req.body
+
+  if (req.headers.hasOwnProperty("content-type") 
+      && req.headers["content-type"] === 'application/x-www-form-urlencoded') {
+        response["inputs"]["x-www-form-urlencoded"] = true;
+  }
+  else {
+    response["inputs"]["x-www-form-urlencoded"] = false;
+  }
+
+  response["outputs"] = {};
+  response["outputs"]["textPathOutput"] = req.params.string_path;
+  response["outputs"]["textOutput"] = req.body.string;
+  response["outputs"]["decimalOutput"] = parseFloat(req.body.decimal);
+  response["outputs"]["integerOutput"] = parseInt(req.body.integer);
+
+  if (req.body.boolean === 'true') {
+    response["outputs"]["booleanOutput"] = true;
+  }
+
+  else if (req.body.boolean === 'false') {
+    response["outputs"]["booleanOutput"] = false;
+  }
+
+  else {
+    response["outputs"]["booleanOutput"] = 'error'
+  }
+
+  response["outputs"]["datetimeOutput"] = req.body.datetime;
+
   res.json(response);
 });
 

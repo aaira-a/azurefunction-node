@@ -449,6 +449,48 @@ describe('POST /api/query-encoding', () => {
 
 });
 
+describe('POST /api/form-urlencoded/', () => {
+
+  it('should return true for urlencoded content type', () => {
+    return request(app)
+      .post('/api/form-urlencoded/mytext/parsed')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .send()
+      .then((response) => {
+        expect(response.status).to.eql(200);
+        expect(response.body['inputs']['x-www-form-urlencoded']).to.eql(true);
+      })
+  });
+
+  it('should return false for application/json content type', () => {
+    return request(app)
+      .post('/api/form-urlencoded/mytext/parsed')
+      .set('Content-Type', 'application/vnd.api+json')
+      .send()
+      .then((response) => {
+        expect(response.status).to.eql(200);
+        expect(response.body['inputs']['x-www-form-urlencoded']).to.eql(false);
+      })
+  });
+
+  it('should return parsed data', () => {
+    return request(app)
+      .post('/api/form-urlencoded/mytext/parsed')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .send('string=abc&decimal=0.1&integer=23&boolean=true&datetime=2017-12-23T12:34:56Z')
+      .then((response) => {
+        expect(response.status).to.eql(200);
+        expect(response.body['outputs']['textPathOutput']).to.eql('mytext');
+        expect(response.body['outputs']['textOutput']).to.eql('abc');
+        expect(response.body['outputs']['decimalOutput']).to.eql(0.1);
+        expect(response.body['outputs']['integerOutput']).to.eql(23);
+        expect(response.body['outputs']['booleanOutput']).to.eql(true);
+        expect(response.body['outputs']['datetimeOutput']).to.eql('2017-12-23T12:34:56Z');
+      })
+  });
+
+})
+
 describe('GET /api/sleep', () => {
 
   let clock = null;

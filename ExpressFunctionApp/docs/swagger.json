@@ -281,6 +281,106 @@
         }
       }
     },
+    "/form-urlencoded/{string-path}/parsed": {
+      "post": {
+        "summary": "POST x-www-form-urlencoded content-type",
+        "description": "Returns parsed form-urlencoded data",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "string-path",
+            "x-ntx-summary": "Text Path Input",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "string",
+            "x-ntx-summary": "Text Form Input",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "decimal",
+            "x-ntx-summary": "Decimal Form Input",
+            "type": "number"
+          },
+          {
+            "in": "formData",
+            "name": "integer",
+            "x-ntx-summary": "Integer Form Input",
+            "type": "integer"
+          },
+          {
+            "in": "formData",
+            "name": "boolean",
+            "x-ntx-summary": "Boolean Form Input",
+            "type": "boolean"
+          },
+          {
+            "in": "formData",
+            "name": "datetime",
+            "x-ntx-summary": "Datetime Form Input",
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "inputs": {
+                  "type": "object",
+                  "description": "Logged Request Inputs",
+                  "x-ntx-summary": "Logged Request Inputs"
+                },
+                "outputs": {
+                  "type": "object",
+                  "properties": {
+                    "textPathOutput": {
+                      "type": "string",
+                      "description": "Text Path Output",
+                      "x-ntx-summary": "Text Path Output"
+                    },
+                    "textOutput": {
+                      "type": "string",
+                      "description": "Text Output",
+                      "x-ntx-summary": "Text Output"
+                    },
+                    "decimalOutput": {
+                      "type": "number",
+                      "description": "Decimal Output",
+                      "x-ntx-summary": "Decimal Output"
+                    },
+                    "integerOutput": {
+                      "type": "integer",
+                      "description": "Integer Output",
+                      "x-ntx-summary": "Integer Output"
+                    },
+                    "booleanOutput": {
+                      "type": "boolean",
+                      "description": "Boolean Output",
+                      "x-ntx-summary": "Boolean Output"
+                    },
+                    "datetimeOutput": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Datetime Output",
+                      "x-ntx-summary": "Datetime Output"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/sleep": {
       "get": {
         "summary": "GET response after 75 seconds",
