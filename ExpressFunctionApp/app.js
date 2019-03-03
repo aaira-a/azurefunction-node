@@ -180,6 +180,27 @@ app.post('/api/form-urlencoded/:string_path/parsed', (req, res) => {
     response["inputs"]["x-www-form-urlencoded"] = false;
   }
 
+  response["outputs"] = {};
+  response["outputs"]["textPathOutput"] = req.params.string_path;
+  response["outputs"]["textOutput"] = req.body.string;
+  response["outputs"]["decimalOutput"] = parseFloat(req.body.decimal);
+  response["outputs"]["integerOutput"] = parseInt(req.body.integer);
+
+  if (req.body.boolean === 'true') {
+    response["outputs"]["booleanOutput"] = true;
+  }
+
+  else if (req.body.boolean === 'false') {
+    response["outputs"]["booleanOutput"] = false;
+  }
+
+  else {
+    response["outputs"]["booleanOutput"] = 'error'
+  }
+
+  response["outputs"]["datetimeOutput"] = req.body.datetime;
+
+
   res.json(response);
 });
 
