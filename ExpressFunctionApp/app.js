@@ -8,14 +8,6 @@ const app = express();
 const sleepRoute = require("./routes/sleepRoute");
 
 // Workaround for Azure Function as discussed in GitHub issue
-if (process.env.CLOUD == "azure") {
-  app.use(azureBodyParser());
-}
-else {
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true}));
-}
-
 function azureBodyParser() {
   return (req, res, next) => {
     if (req.headers["content-type"] === "application/x-www-form-urlencoded") {
@@ -23,6 +15,14 @@ function azureBodyParser() {
     }
     next();
   }
+}
+
+if ("process.env.CLOUD" == "azure") {
+  app.use(azureBodyParser());
+}
+else {
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true}));
 }
 // https://github.com/yvele/azure-function-express/issues/15
 
