@@ -99,10 +99,10 @@ describe('ALL /api/echo/:status?', () => {
   it('should return json request body in echo-body object', () => {
     return request(app)
       .post('/api/echo')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'key1': 'value1', 'key2': 'value2'})
       .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/vnd.api+json');
+        expect(response.body['echo-body-content-type']).to.include('application/json');
         expect(response.body['echo-body']).to.eql({'key1': 'value1', 'key2': 'value2'});
       })
   });
@@ -110,7 +110,7 @@ describe('ALL /api/echo/:status?', () => {
   it('should return 400 status for malformed json request body', () => {
     return request(app)
       .post('/api/echo')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send('{"key1":}')
       .then((response) => {
         expect(response.body['error']['body']).to.eql('{\"key1\":}');
@@ -145,7 +145,7 @@ describe('POST /api/all-types', () => {
   it('should return request headers in inputs object, downcased keys', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .set('Custom-Echo-Header', 'Random-Value-123')
       .set('Another-Echo-Header', 'My value 456')
       .then((response) => {
@@ -157,7 +157,7 @@ describe('POST /api/all-types', () => {
   it('should return request body in outputs object', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'any': {'key1': 'value1'}})
       .then((response) => {
         expect(response.body['inputs']['body']).to.eql({'any': {'key1': 'value1'}});
@@ -167,7 +167,7 @@ describe('POST /api/all-types', () => {
   it('should return json response', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send()
       .then((response) => {
         expect(response.headers['content-type']).to.include('application/json');
@@ -177,7 +177,7 @@ describe('POST /api/all-types', () => {
   it('should return text output', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'textInput': 'abc'}})
       .then((response) => {
         expect(response.body['outputs']['textOutput']).to.eql('abc')
@@ -187,7 +187,7 @@ describe('POST /api/all-types', () => {
   it('should return empty string for empty text input', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'textInput': ''}})
       .then((response) => {
         expect(response.body['outputs']['textOutput']).to.eql('')
@@ -197,7 +197,7 @@ describe('POST /api/all-types', () => {
   it('should return null for null text input', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'textInput': null}})
       .then((response) => {
         expect(response.body['outputs']['textOutput']).to.eql(null)
@@ -207,7 +207,7 @@ describe('POST /api/all-types', () => {
   it('should return decimal output', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'decimalInput': 123.45}})
       .then((response) => {
         expect(response.body['outputs']['decimalOutput']).to.eql(123.45)
@@ -217,7 +217,7 @@ describe('POST /api/all-types', () => {
   it('should not add decimal points for round decimal input', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'decimalInput': 42}})
       .then((response) => {
         expect(response.body['outputs']['decimalOutput']).to.eql(42)
@@ -227,7 +227,7 @@ describe('POST /api/all-types', () => {
   it('should return null for null decimal input', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'decimalInput': null}})
       .then((response) => {
         expect(response.body['outputs']['decimalOutput']).to.eql(null)
@@ -237,7 +237,7 @@ describe('POST /api/all-types', () => {
   it('should return integer output', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'integerInput': -789}})
       .then((response) => {
         expect(response.body['outputs']['integerOutput']).to.eql(-789)
@@ -247,7 +247,7 @@ describe('POST /api/all-types', () => {
   it('should preserve decimals if sent for integer input', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'integerInput': 67.89}})
       .then((response) => {
         expect(response.body['outputs']['integerOutput']).to.eql(67.89)
@@ -257,7 +257,7 @@ describe('POST /api/all-types', () => {
   it('should return null for null integer input', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'integerInput': null}})
       .then((response) => {
         expect(response.body['outputs']['integerOutput']).to.eql(null)
@@ -267,7 +267,7 @@ describe('POST /api/all-types', () => {
   it('should return true boolean output', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'booleanInput': true}})
       .then((response) => {
         expect(response.body['outputs']['booleanOutput']).to.eql(true)
@@ -277,7 +277,7 @@ describe('POST /api/all-types', () => {
   it('should return false boolean output', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'booleanInput': false}})
       .then((response) => {
         expect(response.body['outputs']['booleanOutput']).to.eql(false)
@@ -287,7 +287,7 @@ describe('POST /api/all-types', () => {
   it('should return null for null boolean input', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'booleanInput': null}})
       .then((response) => {
         expect(response.body['outputs']['booleanOutput']).to.eql(null)
@@ -297,7 +297,7 @@ describe('POST /api/all-types', () => {
   it('should return null for incorrect boolean input', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'booleanInput': 'true'}})
       .then((response) => {
         expect(response.body['outputs']['booleanOutput']).to.eql(null)
@@ -307,7 +307,7 @@ describe('POST /api/all-types', () => {
   it('should return datetime output with ISO 8601 Z format', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'datetimeInput': '2017-07-21T17:32:28Z'}})
       .then((response) => {
         expect(response.body['outputs']['datetimeOutput']).to.eql('2017-07-21T17:32:28Z')
@@ -317,7 +317,7 @@ describe('POST /api/all-types', () => {
   it('should return datetime output with ISO 8601 and time offset format', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'datetimeInput': '2017-07-21T17:32:28+0800'}})
       .then((response) => {
         expect(response.body['outputs']['datetimeOutput']).to.eql('2017-07-21T17:32:28+0800')
@@ -327,7 +327,7 @@ describe('POST /api/all-types', () => {
   it('should return null for null datetime input', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'datetimeInput': null}})
       .then((response) => {
         expect(response.body['outputs']['datetimeOutput']).to.eql(null)
@@ -337,7 +337,7 @@ describe('POST /api/all-types', () => {
   it('should return collection output', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'collectionInput': ['abc', 'def', 'ghi']}})
       .then((response) => {
         expect(response.body['outputs']['collectionOutput']).to.eql(['abc', 'def', 'ghi'])
@@ -347,7 +347,7 @@ describe('POST /api/all-types', () => {
   it('should return empty collection for empty collection input', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'collectionInput': []}})
       .then((response) => {
         expect(response.body['outputs']['collectionOutput']).to.eql([])
@@ -357,7 +357,7 @@ describe('POST /api/all-types', () => {
   it('should return null for non-collection input', () => {
     return request(app)
       .post('/api/all-types')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({'allTypesInputs': {'collectionInput': 'abc'}})
       .then((response) => {
         expect(response.body['outputs']['collectionOutput']).to.eql(null)
@@ -370,7 +370,7 @@ describe('POST /api/all-parameter-types/:string_path/:integer_path/:boolean_path
   it('should return all parameters in output', () => {
     return request(app)
       .post('/api/all-parameter-types/something/777/true?string_query=mystringquery&integer_query=666&boolean_query=true')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .set('string_header', 'this is a string header')
       .set('integer_header', '555')
       .set('boolean_header', 'true')
@@ -402,7 +402,7 @@ describe('POST /api/path-encoding/:text', () => {
   it('should return spaces encoded as %20', () => {
     return request(app)
       .post('/api/path-encoding/text%20with%20spaces')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({})
       .then((response) => {
         expect(response.status).to.eql(200);
@@ -413,7 +413,7 @@ describe('POST /api/path-encoding/:text', () => {
   it('should return spaces encoded as +', () => {
     return request(app)
       .post('/api/path-encoding/text+with+spaces')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({})
       .then((response) => {
         expect(response.status).to.eql(200);
@@ -428,7 +428,7 @@ describe('POST /api/query-encoding', () => {
   it('should return spaces encoded as %20', () => {
     return request(app)
       .post('/api/query-encoding?string_query=text%20with%20spaces')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({})
       .then((response) => {
         expect(response.status).to.eql(200);
@@ -439,7 +439,7 @@ describe('POST /api/query-encoding', () => {
   it('should return spaces encoded as +', () => {
     return request(app)
       .post('/api/query-encoding?string_query=text+with+spaces')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send({})
       .then((response) => {
         expect(response.status).to.eql(200);
@@ -465,7 +465,7 @@ describe('POST /api/form-urlencoded/', () => {
   it('should return false for application/json content type', () => {
     return request(app)
       .post('/api/form-urlencoded/mytext/parsed')
-      .set('Content-Type', 'application/vnd.api+json')
+      .set('Content-Type', 'application/json')
       .send()
       .then((response) => {
         expect(response.status).to.eql(200);

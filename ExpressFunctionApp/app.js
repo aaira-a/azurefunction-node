@@ -1,26 +1,30 @@
 const express = require("express");
 const jsonfile = require("jsonfile");
 const bodyParser = require("body-parser");
+const queryString = require("query-string");
 const path = require("path");
 const app = express();
 
 const sleepRoute = require("./routes/sleepRoute");
 
 // Workaround for Azure Function as discussed in GitHub issue
-app.use(bodyParser.json({ type: 'application/*+json' }));
-// https://github.com/yvele/azure-function-express/issues/15
+if (process.env.CLOUD == "azure") {
+  app.use(azureBodyParser());
+}
+else {
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true}));
+}
 
-// Keep raw urlencoded body to be used for testing client-side encoding
-// function rawBodySaver (req, res, buf, encoding) {
-//   if (buf && buf.length) {
-//     req.rawBody = buf.toString(encoding || 'utf8');
-//   }
-// }
-// app.use(bodyParser.urlencoded({
-//   type: 'application/x-www-form-urlencoded',
-//   verify: rawBodySaver
-// }));
-// https://stackoverflow.com/a/43659975
+function azureBodyParser() {
+  return (req, res, next) => {
+    if (req.headers["content-type"] === "application/x-www-form-urlencoded") {
+      req.body = queryString.parse(req.body);
+    }
+    next();
+  }
+}
+// https://github.com/yvele/azure-function-express/issues/15
 
 app.get("/api/hello", (req, res) => {
   res.json({
