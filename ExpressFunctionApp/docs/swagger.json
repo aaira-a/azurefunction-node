@@ -212,7 +212,7 @@
     },
     "/path-encoding/{string-path}": {
       "post": {
-        "summary": "POST text route path",
+        "summary": "POST text route path encoding",
         "description": "Returns literal route path for testing encoding performed by the caller",
         "parameters": [
           {
@@ -247,7 +247,7 @@
     },
     "/query-encoding": {
       "post": {
-        "summary": "POST text query string",
+        "summary": "POST text query string encoding",
         "description": "Returns literal querystring for testing encoding performed by the caller",
         "parameters": [
           {
