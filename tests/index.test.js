@@ -421,6 +421,17 @@ describe('POST /api/path-encoding/:text', () => {
       })
   });
 
+  it('should return encoded special characters', () => {
+    return request(app)
+      .post("/api/path-encoding/%3A%2F%3F%23%5B%5D%40%21%24%26%27%28%29%2A%2B%2C%3B%3D%25%20")
+      .set('Content-Type', 'application/json')
+      .send({})
+      .then((response) => {
+        expect(response.status).to.eql(200);
+        expect(response.body['path']).to.eql('%3A%2F%3F%23%5B%5D%40%21%24%26%27%28%29%2A%2B%2C%3B%3D%25%20')
+      })
+  });
+
 });
 
 describe('POST /api/query-encoding', () => {
@@ -444,6 +455,17 @@ describe('POST /api/query-encoding', () => {
       .then((response) => {
         expect(response.status).to.eql(200);
         expect(response.body['query']).to.eql('text+with+spaces')
+      })
+  });
+
+  it('should return encoded special characters', () => {
+    return request(app)
+      .post("/api/query-encoding?string_query=%3A%2F%3F%23%5B%5D%40%21%24%26%27%28%29%2A%2B%2C%3B%3D%25%20")
+      .set('Content-Type', 'application/json')
+      .send({})
+      .then((response) => {
+        expect(response.status).to.eql(200);
+        expect(response.body['query']).to.eql('%3A%2F%3F%23%5B%5D%40%21%24%26%27%28%29%2A%2B%2C%3B%3D%25%20')
       })
   });
 
