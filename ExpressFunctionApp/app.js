@@ -146,7 +146,7 @@ app.post('/api/query-encoding', (req, res) => {
   response["inputs"]["headers"] = req.headers;
   response["inputs"]["body"] = req.body;
 
-  response["query"] = req.originalUrl.replace(/.*\/api\/query-encoding\?string_query=/g, '');
+  response["query"] = req.headers["x-original-url"].replace(/.*\/api\/query-encoding\?string_query=/g, '');
   res.json(response);
 });
 
