@@ -2,6 +2,7 @@ const assert = require("assert");
 const expect = require("chai").expect;
 const request = require("supertest");
 const sinon = require("sinon");
+const validator = require("validator");
 const app = require("../ExpressFunctionApp/app");
 
 const getSleep = require("../ExpressFunctionApp/routes/getSleep");
@@ -515,6 +516,87 @@ describe('POST /api/form-urlencoded/', () => {
   });
 
 })
+
+describe('POST /api/async-callback', () => {
+
+  it('should return 202 if initialStatusCode parameter is absent', () => {
+    return request(app)
+      .post('/api/async-callback')
+      .set('Content-Type', 'application/json')
+      .send({})
+      .then((response) => {
+        expect(response.status).to.eql(202);
+      })
+  });
+
+  [200, 400, 401, 403, 404, 405, 410, 500, 502, 503, 504].forEach((status) => {
+    it('should return ' +  status + ' if supplied in initialStatusCode parameter ', () => {
+      return request(app)
+        .post('/api/async-callback')
+        .set('Content-Type', 'application/json')
+        .send({'initialStatusCode': status})
+        .then((response) => {
+          expect(response.status).to.eql(status);
+        })
+    });
+  });
+
+  it('should return random uuid as receipt id', () => {
+    return request(app)
+      .post('/api/async-callback')
+      .set('Content-Type', 'application/json')
+      .send({})
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(validator.isUUID(response.body['receiptId'])).to.eql(true)
+      })
+  });
+
+  it('should return text output', () => {
+    return request(app)
+      .post('/api/async-callback')
+      .set('Content-Type', 'application/json')
+      .send({'textInput': 'xyz'})
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(response.body['outputs']['textOutput']).to.eql('xyz')
+      })
+  });
+
+  it('should return result status if supplied in request', () => {
+    return request(app)
+      .post('/api/async-callback')
+      .set('Content-Type', 'application/json')
+      .send({'resultStatus': 'something'})
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(response.body['outputs']['actualResultStatus']).to.eql('something')
+      })
+  });
+
+  it('should return null result status if parameter is absent', () => {
+    return request(app)
+      .post('/api/async-callback')
+      .set('Content-Type', 'application/json')
+      .send({})
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(response.body['outputs']['actualResultStatus']).to.eql(null)
+      })
+  });
+
+  it('should return empty string result status if input is empty', () => {
+    return request(app)
+      .post('/api/async-callback')
+      .set('Content-Type', 'application/json')
+      .send({'resultStatus': ''})
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(response.body['outputs']['actualResultStatus']).to.eql('')
+      })
+  });
+
+});
 
 describe('GET /api/sleep', () => {
 

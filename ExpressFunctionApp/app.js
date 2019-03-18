@@ -1,6 +1,7 @@
 const express = require("express");
 const jsonfile = require("jsonfile");
 const path = require("path");
+const uuidv4 = require("uuid/v4");
 const app = express();
 
 const sleepRoute = require("./routes/sleepRoute");
@@ -188,6 +189,32 @@ app.post('/api/form-urlencoded/:string_path/parsed', (req, res) => {
 
 
   res.json(response);
+});
+
+app.post('/api/async-callback', (req, res) => {
+  let response = {};
+
+  response["receiptId"] = uuidv4();
+
+  response["inputs"] = {};
+  response["inputs"]["headers"] = req.headers;
+  response["inputs"]["body"] = req.body;
+
+  response["outputs"] = {};
+  response["outputs"]["textOutput"] = req.body["textInput"];
+  
+  if (req.hasOwnProperty("body") && req["body"].hasOwnProperty("resultStatus")) {
+    response["outputs"]["actualResultStatus"] = req.body["resultStatus"];
+  } else {
+    response["outputs"]["actualResultStatus"] = null;
+  }
+
+  if (req.hasOwnProperty("body") && req["body"].hasOwnProperty("initialStatusCode")) {
+    res.status(req["body"]["initialStatusCode"]).json(response);
+  } else {
+    res.status(202).json(response);
+  }
+
 });
 
 app.use('/api/sleep', sleepRoute);

@@ -19,12 +19,14 @@
   "dependencies": {
     "azure-aws-serverless-express": "^0.1.5",
     "express": "^4.16.4",
-    "jsonfile": "^5.0.0"
+    "jsonfile": "^5.0.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
     "sinon": "^7.2.3",
-    "supertest": "^3.3.0"
+    "supertest": "^3.3.0",
+    "validator": "^10.11.0"
   }
 }

@@ -381,6 +381,93 @@
         }
       }
     },
+    "/async-callback": {
+      "post": {
+        "summary": "POST async-callback",
+        "description": "Calls back with different outcomes",
+        "x-ntx-long-running-operation": true,
+        "x-ntx-notification-content": {
+          "description": "Result",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "inputs": {
+                "type": "object",
+                "description": "Logged Request Inputs",
+                "x-ntx-summary": "Logged Request Inputs"
+              },
+              "outputs": {
+                "type": "object",
+                "properties": {
+                  "textOutput": {
+                    "type": "string",
+                    "description": "Text Output",
+                    "x-ntx-summary": "Text Output"
+                  },
+                  "actualResultStatus": {
+                    "type": "string",
+                    "description": "Actual Result Status",
+                    "x-ntx-summary": "Actual Result Status"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "callbackUrl",
+            "x-ntx-summary": "callback url",
+            "description": "callback url",
+            "x-ntx-notification-url": true,
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "requestBody",
+            "description": "Request Body",
+            "x-ntx-summary": "Request Body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "initialStatusCode": {
+                  "type": "integer",
+                  "description": "Initial status code to be returned",
+                  "x-ntx-summary": "Initial Status Code"
+                },
+                "textInput": {
+                  "type": "string",
+                  "description": "Text Input",
+                  "x-ntx-summary": "Text Input"
+                },
+                "resultStatus": {
+                  "type": "string",
+                  "description": "Status to be Returned in Result",
+                  "x-ntx-summary": "Status to be Returned in Result"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted for processing",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "receiptId": {
+                  "type": "string",
+                  "description": "Receipt Id",
+                  "x-ntx-summary": "Receipt Id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/sleep": {
       "get": {
         "summary": "GET response after 75 seconds",
