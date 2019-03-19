@@ -204,7 +204,7 @@ function callCallbackUrl(payload) {
       .catch((error) => {
         console.log(error);
     })
-  }, 5000);
+  }, 15000);
 }
 
 app.post('/api/async-callback', (req, res) => {
