@@ -552,6 +552,35 @@ describe('POST /api/async-callback', () => {
       })
   });
 
+  it('should return input callbackUrl', () => {
+    return request(app)
+      .post('/api/async-callback?callbackUrl=something')
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(response.body['inputs']['callbackUrl']).to.eql('something')
+      })
+  });
+
+  it('should return output callbackUrl without status', () => {
+    return request(app)
+      .post('/api/async-callback?callbackUrl=something')
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(response.body['outputs']['callbackUrl']).to.eql('something')
+      })
+  });
+
+  it('should return output callbackUrl with status', () => {
+    return request(app)
+      .post('/api/async-callback?callbackUrl=mybaseurl')
+      .set('Content-Type', 'application/json')
+      .send({'resultStatus': 'mystatus'})
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(response.body['outputs']['callbackUrl']).to.eql('mybaseurl?status=mystatus')
+      })
+  });
+
   it('should return text output', () => {
     return request(app)
       .post('/api/async-callback')

@@ -1,4 +1,6 @@
 const express = require("express");
+
+const axios = require("axios");
 const jsonfile = require("jsonfile");
 const path = require("path");
 const uuidv4 = require("uuid/v4");
@@ -191,20 +193,40 @@ app.post('/api/form-urlencoded/:string_path/parsed', (req, res) => {
   res.json(response);
 });
 
+function callCallbackUrl(payload) {
+  const urlToCall = payload["outputs"]["callbackUrl"];
+
+  setTimeout(() => {
+    axios.post(urlToCall, payload)
+      .then((response) => {
+        console.log(response.data.status);
+      })
+      .catch((error) => {
+        console.log(error);
+    })
+  }, 5000);
+}
+
 app.post('/api/async-callback', (req, res) => {
   let response = {};
-
+  
   response["receiptId"] = uuidv4();
-
+  
   response["inputs"] = {};
   response["inputs"]["headers"] = req.headers;
   response["inputs"]["body"] = req.body;
 
+  let baseCallbackUrl = req.query["callbackUrl"];
+  response["inputs"]["callbackUrl"] = baseCallbackUrl;
+
   response["outputs"] = {};
   response["outputs"]["textOutput"] = req.body["textInput"];
   
+  response["outputs"]["callbackUrl"] = baseCallbackUrl;
+
   if (req.hasOwnProperty("body") && req["body"].hasOwnProperty("resultStatus")) {
     response["outputs"]["actualResultStatus"] = req.body["resultStatus"];
+    response["outputs"]["callbackUrl"] = baseCallbackUrl + '?status=' + req.body["resultStatus"];
   } else {
     response["outputs"]["actualResultStatus"] = null;
   }
@@ -213,6 +235,10 @@ app.post('/api/async-callback', (req, res) => {
     res.status(req["body"]["initialStatusCode"]).json(response);
   } else {
     res.status(202).json(response);
+  }
+
+  if (req.query["callbackUrl"] !== undefined) {
+     const result = callCallbackUrl(response);
   }
 
 });

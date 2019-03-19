@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/azam-a/azurefunction-node#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "azure-aws-serverless-express": "^0.1.5",
     "express": "^4.16.4",
     "jsonfile": "^5.0.0",
