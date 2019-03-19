@@ -561,23 +561,23 @@ describe('POST /api/async-callback', () => {
       })
   });
 
-  it('should return output callbackUrl without status', () => {
+  it('should return urldecoded output callbackUrl without status', () => {
     return request(app)
-      .post('/api/async-callback?callbackUrl=something')
+      .post('/api/async-callback?callbackUrl=https%3A%2F%2Fsub.domain.tld%2Fpath1%2Fpath2%2Foperation%3Fqs%3Dabc')
       .then((response) => {
         expect(response.status).to.eql(202);
-        expect(response.body['outputs']['callbackUrl']).to.eql('something')
+        expect(response.body['outputs']['callbackUrl']).to.eql('https://sub.domain.tld/path1/path2/operation?qs=abc')
       })
   });
 
-  it('should return output callbackUrl with status', () => {
+  it('should return urldecoded output callbackUrl with status', () => {
     return request(app)
-      .post('/api/async-callback?callbackUrl=mybaseurl')
+      .post('/api/async-callback?callbackUrl=https%3A%2F%2Fsub.domain.tld%2Fpath1%2Fpath2%2Foperation%3Fqs%3Dabc')
       .set('Content-Type', 'application/json')
       .send({'resultStatus': 'mystatus'})
       .then((response) => {
         expect(response.status).to.eql(202);
-        expect(response.body['outputs']['callbackUrl']).to.eql('mybaseurl?status=mystatus')
+        expect(response.body['outputs']['callbackUrl']).to.eql('https://sub.domain.tld/path1/path2/operation?qs=abc&status=mystatus')
       })
   });
 

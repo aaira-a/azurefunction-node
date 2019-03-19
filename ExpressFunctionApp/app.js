@@ -216,7 +216,7 @@ app.post('/api/async-callback', (req, res) => {
   response["inputs"]["headers"] = req.headers;
   response["inputs"]["body"] = req.body;
 
-  let baseCallbackUrl = req.query["callbackUrl"];
+  let baseCallbackUrl = decodeURI(req.query["callbackUrl"]);
   response["inputs"]["callbackUrl"] = baseCallbackUrl;
 
   response["outputs"] = {};
@@ -226,7 +226,7 @@ app.post('/api/async-callback', (req, res) => {
 
   if (req.hasOwnProperty("body") && req["body"].hasOwnProperty("resultStatus")) {
     response["outputs"]["actualResultStatus"] = req.body["resultStatus"];
-    response["outputs"]["callbackUrl"] = baseCallbackUrl + '?status=' + req.body["resultStatus"];
+    response["outputs"]["callbackUrl"] = baseCallbackUrl + '&status=' + req.body["resultStatus"];
   } else {
     response["outputs"]["actualResultStatus"] = null;
   }
