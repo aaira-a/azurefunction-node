@@ -11,6 +11,13 @@ const sleepRoute = require("./routes/sleepRoute");
 app.use(express.json());
 app.use(express.urlencoded());
 
+app.use((req, res, next) => {
+  if (req.headers.hasOwnProperty("x-apigateway-event")) {
+    delete req.headers["x-apigateway-event"];
+  }
+  next();
+});
+
 app.get("/api/hello", (req, res) => {
   res.json({
     "hello": "world"
