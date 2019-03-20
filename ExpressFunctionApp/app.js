@@ -246,8 +246,6 @@ app.post('/api/async-callback', (req, res) => {
       req["body"]["errorMessage"] !== '')
       {
         response["error"] = req.body["errorMessage"];
-  } else {
-    response["error"] = null;
   }
 
   if (req.hasOwnProperty("body") &&

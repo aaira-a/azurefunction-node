@@ -657,24 +657,24 @@ describe('POST /api/async-callback', () => {
       })
   });
 
-  it('should return null error message if input is empty string', () => {
+  it('should not return error message if input is empty string', () => {
     return request(app)
       .post('/api/async-callback')
       .set('Content-Type', 'application/json')
       .send({'errorMessage': ''})
       .then((response) => {
         expect(response.status).to.eql(202);
-        expect(response.body['error']).to.eql(null)
+        expect(response.body['error']).to.eql(undefined)
       })
   });
 
-  it('should return null error message if parameter is absent', () => {
+  it('should not return null error message if parameter is absent', () => {
     return request(app)
       .post('/api/async-callback')
       .set('Content-Type', 'application/json')
       .then((response) => {
         expect(response.status).to.eql(202);
-        expect(response.body['error']).to.eql(null)
+        expect(response.body['error']).to.eql(undefined)
       })
   });
 
