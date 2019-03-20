@@ -389,29 +389,7 @@
         "x-ntx-notification-content": {
           "description": "Result",
           "schema": {
-            "type": "object",
-            "properties": {
-              "inputs": {
-                "type": "object",
-                "description": "Logged Request Inputs",
-                "x-ntx-summary": "Logged Request Inputs"
-              },
-              "outputs": {
-                "type": "object",
-                "properties": {
-                  "textOutput": {
-                    "type": "string",
-                    "description": "Text Output",
-                    "x-ntx-summary": "Text Output"
-                  },
-                  "actualResultStatus": {
-                    "type": "string",
-                    "description": "Actual Result Status",
-                    "x-ntx-summary": "Actual Result Status"
-                  }
-                }
-              }
-            }
+            "$ref": "#/definitions/asyncCallbackResult"
           }
         },
         "parameters": [
@@ -444,14 +422,25 @@
                 },
                 "resultStatus": {
                   "type": "string",
-                  "description": "Status to be Returned in Result",
-                  "x-ntx-summary": "Status to be Returned in Result"
+                  "description": "Status to be returned in result",
+                  "x-ntx-summary": "Status to be returned in result"
+                },
+                "errorMessage": {
+                  "type": "string",
+                  "description": "Error message to be returned",
+                  "x-ntx-summary": "Error message to be returned"
                 }
               }
             }
           }
         ],
         "responses": {
+          "200": {
+            "description": "Result after asynchronous processing",
+            "schema": {
+              "$ref": "#/definitions/asyncCallbackResult"
+            }
+          },
           "202": {
             "description": "Accepted for processing",
             "schema": {
@@ -662,6 +651,31 @@
                   "x-ntx-summary": "Text Property Body Output"
                 }
               }
+            }
+          }
+        }
+      }
+    },
+    "asyncCallbackResult": {
+      "type": "object",
+      "properties": {
+        "inputs": {
+          "type": "object",
+          "description": "Logged Request Inputs",
+          "x-ntx-summary": "Logged Request Inputs"
+        },
+        "outputs": {
+          "type": "object",
+          "properties": {
+            "textOutput": {
+              "type": "string",
+              "description": "Text Output",
+              "x-ntx-summary": "Text Output"
+            },
+            "actualResultStatus": {
+              "type": "string",
+              "description": "Actual Result Status",
+              "x-ntx-summary": "Actual Result Status"
             }
           }
         }
