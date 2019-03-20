@@ -224,15 +224,30 @@ app.post('/api/async-callback', (req, res) => {
   
   response["outputs"]["callbackUrl"] = baseCallbackUrl;
 
-  if (req.hasOwnProperty("body") && req["body"].hasOwnProperty("resultStatus")) {
-    response["outputs"]["actualResultStatus"] = req.body["resultStatus"];
-    response["outputs"]["callbackUrl"] = baseCallbackUrl + '&status=' + req.body["resultStatus"];
+  if (req.hasOwnProperty("body") && 
+      req["body"].hasOwnProperty("resultStatus") &&
+      req["body"]["resultStatus"] !== '') 
+      {
+        response["outputs"]["actualResultStatus"] = req.body["resultStatus"];
+        response["outputs"]["callbackUrl"] = baseCallbackUrl + '&status=' + req.body["resultStatus"];
   } else {
     response["outputs"]["actualResultStatus"] = null;
   }
 
-  if (req.hasOwnProperty("body") && req["body"].hasOwnProperty("initialStatusCode")) {
-    res.status(req["body"]["initialStatusCode"]).json(response);
+  if (req.hasOwnProperty("body") &&
+      req["body"].hasOwnProperty("errorMessage") &&
+      req["body"]["errorMessage"] !== '')
+      {
+        response["error"] = req.body["errorMessage"];
+  } else {
+    response["error"] = null;
+  }
+
+  if (req.hasOwnProperty("body") &&
+      req["body"].hasOwnProperty("initialStatusCode") &&
+      req["body"]["initialStatusCode"] !== null)
+      {
+        res.status(req["body"]["initialStatusCode"]).json(response);
   } else {
     res.status(202).json(response);
   }

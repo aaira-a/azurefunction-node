@@ -529,6 +529,16 @@ describe('POST /api/async-callback', () => {
       })
   });
 
+  it('should return 202 if initialStatusCode parameter is null', () => {
+    return request(app)
+      .post('/api/async-callback')
+      .set('Content-Type', 'application/json')
+      .send({'initialStatusCode': null})
+      .then((response) => {
+        expect(response.status).to.eql(202);
+      })
+  });
+
   [200, 400, 401, 403, 404, 405, 410, 500, 502, 503, 504].forEach((status) => {
     it('should return ' +  status + ' if supplied in initialStatusCode parameter ', () => {
       return request(app)
@@ -581,6 +591,17 @@ describe('POST /api/async-callback', () => {
       })
   });
 
+  it('should return urldecoded output callbackUrl without status if status is empty string', () => {
+    return request(app)
+      .post('/api/async-callback?callbackUrl=https%3A%2F%2Fsub.domain.tld%2Fpath1%2Fpath2%2Foperation%3Fqs%3Dabc')
+      .set('Content-Type', 'application/json')
+      .send({'resultStatus': ''})
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(response.body['outputs']['callbackUrl']).to.eql('https://sub.domain.tld/path1/path2/operation?qs=abc')
+      })
+  });
+
   it('should return text output', () => {
     return request(app)
       .post('/api/async-callback')
@@ -614,14 +635,46 @@ describe('POST /api/async-callback', () => {
       })
   });
 
-  it('should return empty string result status if input is empty', () => {
+  it('should return null result status if input is empty string', () => {
     return request(app)
       .post('/api/async-callback')
       .set('Content-Type', 'application/json')
       .send({'resultStatus': ''})
       .then((response) => {
         expect(response.status).to.eql(202);
-        expect(response.body['outputs']['actualResultStatus']).to.eql('')
+        expect(response.body['outputs']['actualResultStatus']).to.eql(null)
+      })
+  });
+
+  it('should return error message if supplied in request', () => {
+    return request(app)
+      .post('/api/async-callback')
+      .set('Content-Type', 'application/json')
+      .send({'errorMessage': 'this is an error message'})
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(response.body['error']).to.eql('this is an error message')
+      })
+  });
+
+  it('should return null error message if input is empty string', () => {
+    return request(app)
+      .post('/api/async-callback')
+      .set('Content-Type', 'application/json')
+      .send({'errorMessage': ''})
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(response.body['error']).to.eql(null)
+      })
+  });
+
+  it('should return null error message if parameter is absent', () => {
+    return request(app)
+      .post('/api/async-callback')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(response.body['error']).to.eql(null)
       })
   });
 
