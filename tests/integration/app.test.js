@@ -1,11 +1,8 @@
 const assert = require("assert");
 const expect = require("chai").expect;
 const request = require("supertest");
-const sinon = require("sinon");
 const validator = require("validator");
-const app = require("../ExpressFunctionApp/app");
-
-const getSleep = require("../ExpressFunctionApp/routes/getSleep");
+const app = require("../../ExpressFunctionApp/app");
 
 describe('GET /api/hello', () => {
 
@@ -678,33 +675,4 @@ describe('POST /api/async-callback', () => {
       })
   });
 
-});
-
-describe('GET /api/sleep', () => {
-
-  let clock = null;
-
-  beforeEach(() => {
-    clock = sinon.useFakeTimers();
-  });
-
-  afterEach(() => {
-    clock.restore();
-  }); 
-
-  it('should send OK after 75000 milliseconds', () => {
-    const req = {};
-    const res = {};
-
-    res.send = sinon.spy();
-
-    getSleep(req, res);
-    expect(res.send.called).to.be.eql(false);
-
-    clock.tick(70000);
-    expect(res.send.called).to.eql(false);
-
-    clock.tick(5000);
-    expect(res.send.calledWith({"message": "OK"})).to.eql(true);
-  });
 });
