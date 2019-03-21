@@ -1,7 +1,7 @@
 const expect = require("chai").expect;
 const sinon = require("sinon");
 
-const getSleep = require("../../ExpressFunctionApp/routes/getSleep");
+const { getSleep } = require("../../ExpressFunctionApp/routes/sleep");
 
 describe('GET /api/sleep', () => {
 

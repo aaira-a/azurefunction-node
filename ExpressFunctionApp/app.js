@@ -6,7 +6,7 @@ const path = require("path");
 const uuidv4 = require("uuid/v4");
 const app = express();
 
-const sleepRoute = require("./routes/sleepRoute");
+const sleepRoute = require("./routes/sleep");
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -263,7 +263,7 @@ app.post('/api/async-callback', (req, res) => {
 
 });
 
-app.use('/api/sleep', sleepRoute);
+app.use('/api/sleep', sleepRoute.getSleep);
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError) {
