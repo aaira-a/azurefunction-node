@@ -3,7 +3,7 @@ const sinon = require("sinon");
 
 const { getSleep } = require("../../ExpressFunctionApp/routes/sleep");
 
-describe('GET /api/sleep', () => {
+describe('GET /api/sleep route', () => {
 
   let clock = null;
 

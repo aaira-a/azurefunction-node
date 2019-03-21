@@ -7,12 +7,6 @@ module.exports = {
 
     setTimeout(() => {
       axios.post(urlToCall, payload)
-        .then((response) => {
-          console.log(response.status);
-        })
-        .catch((error) => {
-          console.log(error);
-      })
     }, 15000);
   },
 
