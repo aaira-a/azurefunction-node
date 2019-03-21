@@ -1,12 +1,12 @@
 const express = require("express");
 
-const axios = require("axios");
 const jsonfile = require("jsonfile");
 const path = require("path");
-const uuidv4 = require("uuid/v4");
+
 const app = express();
 
-const sleepRoute = require("./routes/sleepRoute");
+const asyncCallbackRoute = require("./routes/asyncCallback");
+const sleepRoute = require("./routes/sleep");
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -200,70 +200,9 @@ app.post('/api/form-urlencoded/:string_path/parsed', (req, res) => {
   res.json(response);
 });
 
-function callCallbackUrl(payload) {
-  const urlToCall = payload["outputs"]["callbackUrl"];
+app.post('/api/async-callback', asyncCallbackRoute.post);
 
-  setTimeout(() => {
-    axios.post(urlToCall, payload)
-      .then((response) => {
-        console.log(response.data.status);
-      })
-      .catch((error) => {
-        console.log(error);
-    })
-  }, 15000);
-}
-
-app.post('/api/async-callback', (req, res) => {
-  let response = {};
-  
-  response["receiptId"] = uuidv4();
-  
-  response["inputs"] = {};
-  response["inputs"]["headers"] = req.headers;
-  response["inputs"]["body"] = req.body;
-
-  let baseCallbackUrl = decodeURI(req.query["callbackUrl"]);
-  response["inputs"]["callbackUrl"] = baseCallbackUrl;
-
-  response["outputs"] = {};
-  response["outputs"]["textOutput"] = req.body["textInput"];
-  
-  response["outputs"]["callbackUrl"] = baseCallbackUrl;
-
-  if (req.hasOwnProperty("body") && 
-      req["body"].hasOwnProperty("resultStatus") &&
-      req["body"]["resultStatus"] !== '') 
-      {
-        response["outputs"]["actualResultStatus"] = req.body["resultStatus"];
-        response["outputs"]["callbackUrl"] = baseCallbackUrl + '&status=' + req.body["resultStatus"];
-  } else {
-    response["outputs"]["actualResultStatus"] = null;
-  }
-
-  if (req.hasOwnProperty("body") &&
-      req["body"].hasOwnProperty("errorMessage") &&
-      req["body"]["errorMessage"] !== '')
-      {
-        response["error"] = req.body["errorMessage"];
-  }
-
-  if (req.hasOwnProperty("body") &&
-      req["body"].hasOwnProperty("initialStatusCode") &&
-      req["body"]["initialStatusCode"] !== null)
-      {
-        res.status(req["body"]["initialStatusCode"]).json(response);
-  } else {
-    res.status(202).json(response);
-  }
-
-  if (req.query["callbackUrl"] !== undefined) {
-     const result = callCallbackUrl(response);
-  }
-
-});
-
-app.use('/api/sleep', sleepRoute);
+app.use('/api/sleep', sleepRoute.getSleep);
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError) {
