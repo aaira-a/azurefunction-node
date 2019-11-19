@@ -127,7 +127,8 @@ app.get('/api/all-types/object', (req, res) => {
       "integer": 42,
       "boolean": true,
       "datetime": "2017-07-21T17:32:28Z",
-      "collection": ["text2", -543.21, 24, true, "2020-12-31T17:56:57Z"]
+      "collection": ["text2", -543.21, 24, true, "2020-12-31T17:56:57Z"],
+      "object": {"key1": "value1", "key2": {"key3": "value3"}}
   };
 
   if (req.query.hasOwnProperty("expected")) {
@@ -168,27 +169,34 @@ app.get('/api/all-types/array', (req, res) => {
 
   response["outputs"]["object"] = {};
 
-  hardcodedValid = ["text1", 123.546, 42, true, "2017-07-21T17:32:28Z"];
+  hardcodedValid = [
+    "text1",
+    123.546,
+    42,
+    true,
+    "2017-07-21T17:32:28Z",
+    {"key1": "value1", "key2": {"key3": "value3"}}
+  ];
 
   if (req.query.hasOwnProperty("expected")) {
     switch (req.query["expected"]) {
       case '':
-        response["outputs"]["object"]["asObject"] = hardcodedValid;
+        response["outputs"]["object"]["asArray"] = hardcodedValid;
         response["outputs"]["object"]["asString"] = hardcodedValid;
         break;
       case 'empty':
-        response["outputs"]["object"]["asObject"] = {};
+        response["outputs"]["object"]["asArray"] = {};
         response["outputs"]["object"]["asString"] = {};
         break;
       case 'plaintext':
         res.send(200, 'this is a plaintext');
       default:
-        response["outputs"]["object"]["asObject"] = hardcodedValid;
+        response["outputs"]["object"]["asArray"] = hardcodedValid;
         response["outputs"]["object"]["asString"] = hardcodedValid;
     }
   }
   else {
-    response["outputs"]["object"]["asObject"] = hardcodedValid;
+    response["outputs"]["object"]["asArray"] = hardcodedValid;
     response["outputs"]["object"]["asString"] = hardcodedValid;
   }
 

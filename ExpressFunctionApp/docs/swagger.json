@@ -673,10 +673,11 @@
             "object": {
               "type": "object",
               "properties": {
-                "asObject": {
-                  "type": "object",
-                  "description": "Hardcoded array as object type",
-                  "x-ntx-summary": "Hardcoded array as object type"
+                "asArray": {
+                  "type": "array",
+                  "items": {},
+                  "description": "Hardcoded array as array type",
+                  "x-ntx-summary": "Hardcoded array as array type"
                 },
                 "asString": {
                   "type": "string",

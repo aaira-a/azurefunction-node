@@ -371,7 +371,8 @@ describe('GET /api/all-types/object', () => {
       "integer": 42,
       "boolean": true,
       "datetime": "2017-07-21T17:32:28Z",
-      "collection": ["text2", -543.21, 24, true, "2020-12-31T17:56:57Z"]
+      "collection": ["text2", -543.21, 24, true, "2020-12-31T17:56:57Z"],
+      "object": {"key1": "value1", "key2": {"key3": "value3"}}
     };
   });
 
@@ -500,7 +501,14 @@ describe('GET /api/all-types/object', () => {
 describe('GET /api/all-types/array', () => {
 
   beforeEach(() => {
-    this.hardcoded = ["text1", 123.546, 42, true, "2017-07-21T17:32:28Z"];
+    this.hardcoded = [
+      "text1",
+      123.546,
+      42,
+      true,
+      "2017-07-21T17:32:28Z",
+      {"key1": "value1", "key2": {"key3": "value3"}}
+    ];
   });
 
   it('should return request headers in inputs object, downcased keys', () => {
@@ -525,12 +533,12 @@ describe('GET /api/all-types/array', () => {
       })
   });  
 
-  it('should return hardcoded body in asObject', () => {
+  it('should return hardcoded body in asArray', () => {
     return request(app)
       .get('/api/all-types/array')
       .set('Content-Type', 'application/json')
       .then((response) => {
-        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+        expect(response.body['outputs']['object']['asArray']).to.eql(this.hardcoded);
       })
   });
 
@@ -543,12 +551,12 @@ describe('GET /api/all-types/array', () => {
       })
   });
 
-  it('should return hardcoded body in asObject if querystring is body', () => {
+  it('should return hardcoded body in asArray if querystring is body', () => {
     return request(app)
       .get('/api/all-types/array?expected=body')
       .set('Content-Type', 'application/json')
       .then((response) => {
-        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+        expect(response.body['outputs']['object']['asArray']).to.eql(this.hardcoded);
       })
   });
 
@@ -561,12 +569,12 @@ describe('GET /api/all-types/array', () => {
       })
   });
 
-  it('should return empty object in asObject if querystring is literal "empty"', () => {
+  it('should return empty object in asArray if querystring is literal "empty"', () => {
     return request(app)
       .get('/api/all-types/array?expected=empty')
       .set('Content-Type', 'application/json')
       .then((response) => {
-        expect(response.body['outputs']['object']['asObject']).to.eql({});
+        expect(response.body['outputs']['object']['asArray']).to.eql({});
       })
   });
 
@@ -579,12 +587,12 @@ describe('GET /api/all-types/array', () => {
       })
   });
 
-  it('should return hardcoded body in asObject if querystring is "" empty string', () => {
+  it('should return hardcoded body in asArray if querystring is "" empty string', () => {
     return request(app)
       .get('/api/all-types/array?expected=')
       .set('Content-Type', 'application/json')
       .then((response) => {
-        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+        expect(response.body['outputs']['object']['asArray']).to.eql(this.hardcoded);
       })
   });
 
@@ -606,12 +614,12 @@ describe('GET /api/all-types/array', () => {
       })
   });
 
-  it('should return hardcoded body in asObject if querystring not matching', () => {
+  it('should return hardcoded body in asArray if querystring not matching', () => {
     return request(app)
       .get('/api/all-types/array?expected=doesntexist')
       .set('Content-Type', 'application/json')
       .then((response) => {
-        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+        expect(response.body['outputs']['object']['asArray']).to.eql(this.hardcoded);
       })
   });
 
