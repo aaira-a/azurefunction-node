@@ -57,6 +57,88 @@ app.all('/api/echo/:status?', (req, res) => {
   res.json(response);
 })
 
+app.all('/api/echo-object', (req, res) => {
+  let response = {};
+
+  response["echo-method"] = req.method;
+  response["echo-headers"] = req.headers;
+  response["echo-qs"] = req.query;
+
+  if (req.headers.hasOwnProperty("content-type")) {
+    response["echo-body-content-type"] = req.headers["content-type"]
+  }
+
+  if (req.query.hasOwnProperty("expected")) {
+    switch (req.query["expected"]) {
+      case '':
+        response["echo-body-1"] = req.body;
+        response["echo-body-2"] = req.body;
+        break;
+      case 'empty':
+        response["echo-body-1"] = {};
+        response["echo-body-2"] = {};
+        break;
+      case 'plaintext':
+        res.send(200, 'this is a plaintext');
+      default:
+        response["echo-body-1"] = req.body;
+        response["echo-body-2"] = req.body;
+    }
+  }
+  else {
+    if (req.hasOwnProperty("body")) {
+      response["echo-body-1"] = req.body;
+      response["echo-body-2"] = req.body;
+    }
+  }
+
+  res.json(response);
+})
+
+app.all('/api/echo-array', (req, res) => {
+  let response = {};
+
+  response["echo-method"] = req.method;
+  response["echo-headers"] = req.headers;
+  response["echo-qs"] = req.query;
+
+  if (req.headers.hasOwnProperty("content-type")) {
+    response["echo-body-content-type"] = req.headers["content-type"]
+  }
+
+  if (req.query.hasOwnProperty("expected")) {
+    switch (req.query["expected"]) {
+      case '':
+        response["echo-body-1"] = req.body;
+        response["echo-body-2"] = req.body;
+        break;
+      case 'empty':
+        response["echo-body-1"] = [];
+        response["echo-body-2"] = [];
+        break;
+      case 'plaintext':
+        res.send(200, 'this is a plaintext');
+      default:
+        response["echo-body-1"] = req.body;
+        response["echo-body-2"] = req.body;
+    }
+  }
+  else {
+    if (req.hasOwnProperty("body")) {
+      response["echo-body-1"] = req.body;
+      response["echo-body-2"] = req.body;
+    }
+  }
+
+  if ((response["echo-body-1"]===req.body) && !(req.body instanceof Array)) {
+    response["error"] = {};
+    response["error"]["body"] = req.body;
+    res.status(400).json(response);
+  }
+
+  res.json(response);
+})
+
 app.get('/api/files/errors/:status', (req, res) => {
   res.status(req.params.status).send();
 });
