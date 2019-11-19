@@ -118,6 +118,64 @@
         }
       }
     },
+    "/all-types/object": {
+      "get": {
+        "summary": "Returns hardcoded object",
+        "description": "Returns hardcoded object and text",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "expected",
+            "description": "Expected data to be returned",
+            "required": false,
+            "type": "string",
+            "default": "body",
+            "enum": [
+              "body",
+              "empty",
+              "plaintext"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/allTypesOutputsObject"
+            }
+          }
+        }
+      }
+    },
+    "/all-types/array": {
+      "get": {
+        "summary": "Returns hardcoded array",
+        "description": "Returns hardcoded array and text",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "expected",
+            "description": "Expected data to be returned",
+            "required": false,
+            "type": "string",
+            "default": "body",
+            "enum": [
+              "body",
+              "empty",
+              "plaintext"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/allTypesOutputsArray"
+            }
+          }
+        }
+      }
+    },
     "/all-parameter-types/{string-path}/{integer-path}/{boolean-path}": {
       "post": {
         "summary": "POST all parameter types",
@@ -566,6 +624,66 @@
               },
               "description": "Collection Output",
               "x-ntx-summary": "Collection Output"
+            }
+          }
+        }
+      }
+    },
+    "allTypesOutputsObject": {
+      "type": "object",
+      "properties": {
+        "inputs": {
+          "type": "object",
+          "description": "Logged Request Inputs",
+          "x-ntx-summary": "Logged Request Inputs"
+        },
+        "outputs": {
+          "type": "object",
+          "properties": {
+            "object": {
+              "type": "object",
+              "properties": {
+                "asObject": {
+                  "type": "object",
+                  "description": "Hardcoded object as object type",
+                  "x-ntx-summary": "Hardcoded object as object type"
+                },
+                "asString": {
+                  "type": "string",
+                  "description": "Hardcoded object as string type",
+                  "x-ntx-summary": "Hardcoded object as string type"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "allTypesOutputsArray": {
+      "type": "object",
+      "properties": {
+        "inputs": {
+          "type": "object",
+          "description": "Logged Request Inputs",
+          "x-ntx-summary": "Logged Request Inputs"
+        },
+        "outputs": {
+          "type": "object",
+          "properties": {
+            "object": {
+              "type": "object",
+              "properties": {
+                "asObject": {
+                  "type": "object",
+                  "description": "Hardcoded array as object type",
+                  "x-ntx-summary": "Hardcoded array as object type"
+                },
+                "asString": {
+                  "type": "string",
+                  "description": "Hardcoded array as string type",
+                  "x-ntx-summary": "Hardcoded array as string type"
+                }
+              }
             }
           }
         }
