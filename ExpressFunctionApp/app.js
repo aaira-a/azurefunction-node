@@ -108,6 +108,93 @@ app.post('/api/all-types', (req, res) => {
   res.json(response);
 });
 
+app.get('/api/all-types/object', (req, res) => {
+  let response = {};
+
+  response["inputs"] = {};
+  response["inputs"]["headers"] = req.headers;
+  response["inputs"]["body"] = req.body;
+  response["inputs"]["qs"] = req.query;
+
+  response["outputs"] = {};
+
+
+  response["outputs"]["object"] = {};
+
+  hardcodedValid = {
+      "text": "text1",
+      "decimal": 123.546,
+      "integer": 42,
+      "boolean": true,
+      "datetime": "2017-07-21T17:32:28Z",
+      "collection": ["text2", -543.21, 24, true, "2020-12-31T17:56:57Z"]
+  };
+
+  if (req.query.hasOwnProperty("expected")) {
+    switch (req.query["expected"]) {
+      case '':
+        response["outputs"]["object"]["asObject"] = hardcodedValid;
+        response["outputs"]["object"]["asString"] = hardcodedValid;
+        break;
+      case 'empty':
+        response["outputs"]["object"]["asObject"] = {};
+        response["outputs"]["object"]["asString"] = {};
+        break;
+      case 'plaintext':
+        res.send(200, 'this is a plaintext');
+      default:
+        response["outputs"]["object"]["asObject"] = hardcodedValid;
+        response["outputs"]["object"]["asString"] = hardcodedValid;
+    }
+  }
+  else {
+    response["outputs"]["object"]["asObject"] = hardcodedValid;
+    response["outputs"]["object"]["asString"] = hardcodedValid;
+  }
+
+  res.json(response);
+});
+
+app.get('/api/all-types/array', (req, res) => {
+  let response = {};
+
+  response["inputs"] = {};
+  response["inputs"]["headers"] = req.headers;
+  response["inputs"]["body"] = req.body;
+  response["inputs"]["qs"] = req.query;
+
+  response["outputs"] = {};
+
+
+  response["outputs"]["object"] = {};
+
+  hardcodedValid = ["text1", 123.546, 42, true, "2017-07-21T17:32:28Z"];
+
+  if (req.query.hasOwnProperty("expected")) {
+    switch (req.query["expected"]) {
+      case '':
+        response["outputs"]["object"]["asObject"] = hardcodedValid;
+        response["outputs"]["object"]["asString"] = hardcodedValid;
+        break;
+      case 'empty':
+        response["outputs"]["object"]["asObject"] = {};
+        response["outputs"]["object"]["asString"] = {};
+        break;
+      case 'plaintext':
+        res.send(200, 'this is a plaintext');
+      default:
+        response["outputs"]["object"]["asObject"] = hardcodedValid;
+        response["outputs"]["object"]["asString"] = hardcodedValid;
+    }
+  }
+  else {
+    response["outputs"]["object"]["asObject"] = hardcodedValid;
+    response["outputs"]["object"]["asString"] = hardcodedValid;
+  }
+
+  res.json(response);
+});
+
 app.post('/api/all-parameter-types/:string_path/:integer_path/:boolean_path', (req, res) => {
   let response = {};
 

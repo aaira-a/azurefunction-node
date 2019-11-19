@@ -93,7 +93,6 @@ describe('ALL /api/echo/:status?', () => {
     });
   });
 
-
   it('should return json request body in echo-body object', () => {
     return request(app)
       .post('/api/echo')
@@ -359,6 +358,269 @@ describe('POST /api/all-types', () => {
       .send({'allTypesInputs': {'collectionInput': 'abc'}})
       .then((response) => {
         expect(response.body['outputs']['collectionOutput']).to.eql(null)
+      })
+  });
+});
+
+describe('GET /api/all-types/object', () => {
+
+  beforeEach(() => {
+    this.hardcoded = {
+      "text": "text1",
+      "decimal": 123.546,
+      "integer": 42,
+      "boolean": true,
+      "datetime": "2017-07-21T17:32:28Z",
+      "collection": ["text2", -543.21, 24, true, "2020-12-31T17:56:57Z"]
+    };
+  });
+
+  it('should return request headers in inputs object, downcased keys', () => {
+    return request(app)
+      .get('/api/all-types/object')
+      .set('Content-Type', 'application/json')
+      .set('Custom-Echo-Header', 'Random-Value-123')
+      .set('Another-Echo-Header', 'My value 456')
+      .then((response) => {
+        expect(response.body['inputs']['headers']['custom-echo-header']).to.eql('Random-Value-123');
+        expect(response.body['inputs']['headers']['another-echo-header']).to.eql('My value 456');
+      })
+  });
+
+  it('should return json response', () => {
+    return request(app)
+      .get('/api/all-types/object')
+      .set('Content-Type', 'application/json')
+      .send()
+      .then((response) => {
+        expect(response.headers['content-type']).to.include('application/json');
+      })
+  });  
+
+  it('should return hardcoded body in asObject', () => {
+    return request(app)
+      .get('/api/all-types/object')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString', () => {
+    return request(app)
+      .get('/api/all-types/object')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asObject if querystring is body', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=body')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString if querystring is body', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=body')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return empty object in asObject if querystring is literal "empty"', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=empty')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql({});
+      })
+  });
+
+  it('should return empty object in asString if querystring is literal "empty"', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=empty')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql({});
+      })
+  });
+
+  it('should return hardcoded body in asObject if querystring is "" empty string', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString if querystring is "" empty string', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded plaintext if requested in querystring', () => {
+      return request(app)
+      .get('/api/all-types/object?expected=plaintext')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.text).to.eql('this is a plaintext');
+      })
+  });
+
+  it('should return hardcoded body in asObject if querystring not matching', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=doesntexist')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString if querystring not matching', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=doesntexist')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+});
+
+describe('GET /api/all-types/array', () => {
+
+  beforeEach(() => {
+    this.hardcoded = ["text1", 123.546, 42, true, "2017-07-21T17:32:28Z"];
+  });
+
+  it('should return request headers in inputs object, downcased keys', () => {
+    return request(app)
+      .get('/api/all-types/array')
+      .set('Content-Type', 'application/json')
+      .set('Custom-Echo-Header', 'Random-Value-123')
+      .set('Another-Echo-Header', 'My value 456')
+      .then((response) => {
+        expect(response.body['inputs']['headers']['custom-echo-header']).to.eql('Random-Value-123');
+        expect(response.body['inputs']['headers']['another-echo-header']).to.eql('My value 456');
+      })
+  });
+
+  it('should return json response', () => {
+    return request(app)
+      .get('/api/all-types/array')
+      .set('Content-Type', 'application/json')
+      .send()
+      .then((response) => {
+        expect(response.headers['content-type']).to.include('application/json');
+      })
+  });  
+
+  it('should return hardcoded body in asObject', () => {
+    return request(app)
+      .get('/api/all-types/array')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString', () => {
+    return request(app)
+      .get('/api/all-types/array')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asObject if querystring is body', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=body')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString if querystring is body', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=body')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return empty object in asObject if querystring is literal "empty"', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=empty')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql({});
+      })
+  });
+
+  it('should return empty object in asString if querystring is literal "empty"', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=empty')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql({});
+      })
+  });
+
+  it('should return hardcoded body in asObject if querystring is "" empty string', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString if querystring is "" empty string', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded plaintext if requested in querystring', () => {
+      return request(app)
+      .get('/api/all-types/array?expected=plaintext')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.text).to.eql('this is a plaintext');
+      })
+  });
+
+  it('should return hardcoded body in asObject if querystring not matching', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=doesntexist')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString if querystring not matching', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=doesntexist')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
       })
   });
 });
