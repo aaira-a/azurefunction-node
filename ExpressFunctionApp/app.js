@@ -57,88 +57,6 @@ app.all('/api/echo/:status?', (req, res) => {
   res.json(response);
 })
 
-app.all('/api/echo-object', (req, res) => {
-  let response = {};
-
-  response["echo-method"] = req.method;
-  response["echo-headers"] = req.headers;
-  response["echo-qs"] = req.query;
-
-  if (req.headers.hasOwnProperty("content-type")) {
-    response["echo-body-content-type"] = req.headers["content-type"]
-  }
-
-  if (req.query.hasOwnProperty("expected")) {
-    switch (req.query["expected"]) {
-      case '':
-        response["echo-body-1"] = req.body;
-        response["echo-body-2"] = req.body;
-        break;
-      case 'empty':
-        response["echo-body-1"] = {};
-        response["echo-body-2"] = {};
-        break;
-      case 'plaintext':
-        res.send(200, 'this is a plaintext');
-      default:
-        response["echo-body-1"] = req.body;
-        response["echo-body-2"] = req.body;
-    }
-  }
-  else {
-    if (req.hasOwnProperty("body")) {
-      response["echo-body-1"] = req.body;
-      response["echo-body-2"] = req.body;
-    }
-  }
-
-  res.json(response);
-})
-
-app.all('/api/echo-array', (req, res) => {
-  let response = {};
-
-  response["echo-method"] = req.method;
-  response["echo-headers"] = req.headers;
-  response["echo-qs"] = req.query;
-
-  if (req.headers.hasOwnProperty("content-type")) {
-    response["echo-body-content-type"] = req.headers["content-type"]
-  }
-
-  if (req.query.hasOwnProperty("expected")) {
-    switch (req.query["expected"]) {
-      case '':
-        response["echo-body-1"] = req.body;
-        response["echo-body-2"] = req.body;
-        break;
-      case 'empty':
-        response["echo-body-1"] = [];
-        response["echo-body-2"] = [];
-        break;
-      case 'plaintext':
-        res.send(200, 'this is a plaintext');
-      default:
-        response["echo-body-1"] = req.body;
-        response["echo-body-2"] = req.body;
-    }
-  }
-  else {
-    if (req.hasOwnProperty("body")) {
-      response["echo-body-1"] = req.body;
-      response["echo-body-2"] = req.body;
-    }
-  }
-
-  if ((response["echo-body-1"]===req.body) && !(req.body instanceof Array)) {
-    response["error"] = {};
-    response["error"]["body"] = req.body;
-    res.status(400).json(response);
-  }
-
-  res.json(response);
-})
-
 app.get('/api/files/errors/:status', (req, res) => {
   res.status(req.params.status).send();
 });
@@ -187,6 +105,93 @@ app.post('/api/all-types', (req, res) => {
       }
     }
   }
+  res.json(response);
+});
+
+app.get('/api/all-types/object', (req, res) => {
+  let response = {};
+
+  response["inputs"] = {};
+  response["inputs"]["headers"] = req.headers;
+  response["inputs"]["body"] = req.body;
+  response["inputs"]["qs"] = req.query;
+
+  response["outputs"] = {};
+
+
+  response["outputs"]["object"] = {};
+
+  hardcodedValid = {
+      "text": "text1",
+      "decimal": 123.546,
+      "integer": 42,
+      "boolean": true,
+      "datetime": "2017-07-21T17:32:28Z",
+      "collection": ["text2", -543.21, 24, true, "2020-12-31T17:56:57Z"]
+  };
+
+  if (req.query.hasOwnProperty("expected")) {
+    switch (req.query["expected"]) {
+      case '':
+        response["outputs"]["object"]["asObject"] = hardcodedValid;
+        response["outputs"]["object"]["asString"] = hardcodedValid;
+        break;
+      case 'empty':
+        response["outputs"]["object"]["asObject"] = {};
+        response["outputs"]["object"]["asString"] = {};
+        break;
+      case 'plaintext':
+        res.send(200, 'this is a plaintext');
+      default:
+        response["outputs"]["object"]["asObject"] = hardcodedValid;
+        response["outputs"]["object"]["asString"] = hardcodedValid;
+    }
+  }
+  else {
+    response["outputs"]["object"]["asObject"] = hardcodedValid;
+    response["outputs"]["object"]["asString"] = hardcodedValid;
+  }
+
+  res.json(response);
+});
+
+app.get('/api/all-types/array', (req, res) => {
+  let response = {};
+
+  response["inputs"] = {};
+  response["inputs"]["headers"] = req.headers;
+  response["inputs"]["body"] = req.body;
+  response["inputs"]["qs"] = req.query;
+
+  response["outputs"] = {};
+
+
+  response["outputs"]["object"] = {};
+
+  hardcodedValid = ["text1", 123.546, 42, true, "2017-07-21T17:32:28Z"];
+
+  if (req.query.hasOwnProperty("expected")) {
+    switch (req.query["expected"]) {
+      case '':
+        response["outputs"]["object"]["asObject"] = hardcodedValid;
+        response["outputs"]["object"]["asString"] = hardcodedValid;
+        break;
+      case 'empty':
+        response["outputs"]["object"]["asObject"] = {};
+        response["outputs"]["object"]["asString"] = {};
+        break;
+      case 'plaintext':
+        res.send(200, 'this is a plaintext');
+      default:
+        response["outputs"]["object"]["asObject"] = hardcodedValid;
+        response["outputs"]["object"]["asString"] = hardcodedValid;
+    }
+  }
+  else {
+    response["outputs"]["object"]["asObject"] = hardcodedValid;
+    response["outputs"]["object"]["asString"] = hardcodedValid;
+  }
+
   res.json(response);
 });
 

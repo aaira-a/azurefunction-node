@@ -125,368 +125,6 @@ describe('ALL /api/echo/:status?', () => {
   });
 });
 
-describe('ALL /api/echo-object/:status?', () => {
-
-  it('should return 200 status', () => {
-    return request(app)
-      .get('/api/echo-object')
-      .then((response) => {
-        expect(response.status).to.eql(200)
-      })
-  });
-
-  it('should return request headers in echo-headers object, downcased keys', () => {
-    return request(app)
-      .get('/api/echo-object')
-      .set('Custom-Echo-Header', 'Random-Value-123')
-      .set('Another-Echo-Header', 'My value 456')
-      .then((response) => {
-        expect(response.body['echo-headers']['custom-echo-header']).to.eql('Random-Value-123');
-        expect(response.body['echo-headers']['another-echo-header']).to.eql('My value 456');
-      })
-  });
-
-  it('should return json response', () => {
-    return request(app)
-      .get('/api/echo-object')
-      .then((response) => {
-        expect(response.headers['content-type']).to.include('application/json');
-      })
-  });
-
-  it('should return query strings in echo-qs object', () => {
-    return request(app)
-      .get('/api/echo-object?abc=def&ghi=jkl')
-      .then((response) => {
-        expect(response.body['echo-qs']['abc']).to.eql('def');
-        expect(response.body['echo-qs']['ghi']).to.eql('jkl');
-      })
-  });
-
-  ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'].forEach((method) => {
-    it('should return ' + method + ' method in echo-method key', () => {
-      return request(app)
-        [method.toLowerCase()]('/api/echo-object')
-        .then((response) => {
-          expect(response.body['echo-method']).to.eql(method);
-        })
-    });
-  });
-
-  it('should return json request body in echo-body-1 object', () => {
-    return request(app)
-      .post('/api/echo-object')
-      .set('Content-Type', 'application/json')
-      .send({'key1': 'value1', 'key2': 'value2'})
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-1']).to.eql({'key1': 'value1', 'key2': 'value2'});
-      })
-  });
-
-  it('should return json request body in echo-body-2 object', () => {
-    return request(app)
-      .post('/api/echo-object')
-      .set('Content-Type', 'application/json')
-      .send({'key1': 'value1', 'key2': 'value2'})
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-2']).to.eql({'key1': 'value1', 'key2': 'value2'});
-      })
-  });
-
-  it('should return json request body in echo-body-1 object if querystring is body', () => {
-    return request(app)
-      .post('/api/echo-object?expected=body')
-      .set('Content-Type', 'application/json')
-      .send({'key1': 'value1', 'key2': 'value2'})
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-1']).to.eql({'key1': 'value1', 'key2': 'value2'});
-      })
-  });
-
-  it('should return json request body in echo-body-2 object if querystring is body', () => {
-    return request(app)
-      .post('/api/echo-object?expected=body')
-      .set('Content-Type', 'application/json')
-      .send({'key1': 'value1', 'key2': 'value2'})
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-2']).to.eql({'key1': 'value1', 'key2': 'value2'});
-      })
-  });
-
-  it('should return json request body in echo-body-1 object if querystring is empty', () => {
-    return request(app)
-      .post('/api/echo-object?expected=')
-      .set('Content-Type', 'application/json')
-      .send({'key1': 'value1', 'key2': 'value2'})
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-1']).to.eql({'key1': 'value1', 'key2': 'value2'});
-      })
-  });
-
-  it('should return json request body in echo-body-2 object if querystring is empty', () => {
-    return request(app)
-      .post('/api/echo-object?expected=')
-      .set('Content-Type', 'application/json')
-      .send({'key1': 'value1', 'key2': 'value2'})
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-2']).to.eql({'key1': 'value1', 'key2': 'value2'});
-      })
-  });
-
-  it('should return empty object in echo-body-1 if requested in querystring', () => {
-      return request(app)
-      .post('/api/echo-object?expected=empty')
-      .set('Content-Type', 'application/json')
-      .send({'key1': 'value1', 'key2': 'value2'})
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-1']).to.eql({});
-      })
-  });
-
-  it('should return empty object in echo-body-2 if requested in querystring', () => {
-      return request(app)
-      .post('/api/echo-object?expected=empty')
-      .set('Content-Type', 'application/json')
-      .send({'key1': 'value1', 'key2': 'value2'})
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-2']).to.eql({});
-      })
-  });
-
-  it('should return plaintext if requested in querystring', () => {
-      return request(app)
-      .post('/api/echo-object?expected=plaintext')
-      .set('Content-Type', 'application/json')
-      .send({'key1': 'value1', 'key2': 'value2'})
-      .then((response) => {
-        expect(response.text).to.eql('this is a plaintext');
-      })
-  });
-
-  it('should return json request body in echo-body-1 object if querystring not matching', () => {
-    return request(app)
-      .post('/api/echo-object?expected=doesntexist')
-      .set('Content-Type', 'application/json')
-      .send({'key1': 'value1', 'key2': 'value2'})
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-1']).to.eql({'key1': 'value1', 'key2': 'value2'});
-      })
-  });
-
-  it('should return json request body in echo-body-2 object if querystring not matching', () => {
-    return request(app)
-      .post('/api/echo-object?expected=doesntexist')
-      .set('Content-Type', 'application/json')
-      .send({'key1': 'value1', 'key2': 'value2'})
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-2']).to.eql({'key1': 'value1', 'key2': 'value2'});
-      })
-  });
-
-  it('should return 400 status for malformed json request body', () => {
-    return request(app)
-      .post('/api/echo-object')
-      .set('Content-Type', 'application/json')
-      .send('{"key1":}')
-      .then((response) => {
-        expect(response.body['error']['body']).to.eql('{\"key1\":}');
-      })
-  });
-
-});
-
-describe('ALL /api/echo-array/:status?', () => {
-
-  it('should return 200 status', () => {
-    return request(app)
-      .post('/api/echo-array')
-      .set('Content-Type', 'application/json')
-      .send([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"])
-      .then((response) => {
-        expect(response.status).to.eql(200)
-      })
-  });
-
-  it('should return request headers in echo-headers object, downcased keys', () => {
-    return request(app)
-      .get('/api/echo-array')
-      .set('Custom-Echo-Header', 'Random-Value-123')
-      .set('Another-Echo-Header', 'My value 456')
-      .then((response) => {
-        expect(response.body['echo-headers']['custom-echo-header']).to.eql('Random-Value-123');
-        expect(response.body['echo-headers']['another-echo-header']).to.eql('My value 456');
-      })
-  });
-
-  it('should return json response', () => {
-    return request(app)
-      .get('/api/echo-array')
-      .then((response) => {
-        expect(response.headers['content-type']).to.include('application/json');
-      })
-  });
-
-  it('should return query strings in echo-qs object', () => {
-    return request(app)
-      .get('/api/echo-array?abc=def&ghi=jkl')
-      .then((response) => {
-        expect(response.body['echo-qs']['abc']).to.eql('def');
-        expect(response.body['echo-qs']['ghi']).to.eql('jkl');
-      })
-  });
-
-  ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'].forEach((method) => {
-    it('should return ' + method + ' method in echo-method key', () => {
-      return request(app)
-        [method.toLowerCase()]('/api/echo-array')
-        .then((response) => {
-          expect(response.body['echo-method']).to.eql(method);
-        })
-    });
-  });
-
-  it('should return array request body in echo-body-1 object', () => {
-    return request(app)
-      .post('/api/echo-array')
-      .set('Content-Type', 'application/json')
-      .send([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"])
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-1']).to.eql([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"]);
-      })
-  });
-
-  it('should return array request body in echo-body-2 object', () => {
-    return request(app)
-      .post('/api/echo-array')
-      .set('Content-Type', 'application/json')
-      .send(["a", "b", "c"])
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-2']).to.eql(["a", "b", "c"]);
-      })
-  });
-
-  it('should return json request body in echo-body-1 object if querystring is body', () => {
-    return request(app)
-      .post('/api/echo-array?expected=body')
-      .set('Content-Type', 'application/json')
-      .send([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"])
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-1']).to.eql([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"]);
-      })
-  });
-
-  it('should return json request body in echo-body-2 object if querystring is body', () => {
-    return request(app)
-      .post('/api/echo-array?expected=body')
-      .set('Content-Type', 'application/json')
-      .send([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"])
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-2']).to.eql([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"]);
-      })
-  });
-
-  it('should return array request body in echo-body-1 object if querystring is empty', () => {
-    return request(app)
-      .post('/api/echo-array?expected=')
-      .set('Content-Type', 'application/json')
-      .send([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"])
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-1']).to.eql([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"]);
-      })
-  });
-
-  it('should return array request body in echo-body-2 object if querystring is empty', () => {
-    return request(app)
-      .post('/api/echo-array?expected=')
-      .set('Content-Type', 'application/json')
-      .send([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"])
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-2']).to.eql([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"]);
-      })
-  });
-
-  it('should return empty object in echo-body-1 if requested in querystring', () => {
-      return request(app)
-      .post('/api/echo-array?expected=empty')
-      .set('Content-Type', 'application/json')
-      .send([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"])
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-1']).to.eql([]);
-      })
-  });
-
-  it('should return empty object in echo-body-2 if requested in querystring', () => {
-      return request(app)
-      .post('/api/echo-array?expected=empty')
-      .set('Content-Type', 'application/json')
-      .send([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"])
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-2']).to.eql([]);
-      })
-  });
-
-  it('should return plaintext if requested in querystring', () => {
-      return request(app)
-      .post('/api/echo-array?expected=plaintext')
-      .set('Content-Type', 'application/json')
-      .send([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"])
-      .then((response) => {
-        expect(response.text).to.eql('this is a plaintext');
-      })
-  });
-
-  it('should return json request body in echo-body-1 object if querystring not matching', () => {
-    return request(app)
-      .post('/api/echo-array?expected=doesntexist')
-      .set('Content-Type', 'application/json')
-      .send([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"])
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-1']).to.eql([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"]);
-      })
-  });
-
-  it('should return json request body in echo-body-2 object if querystring not matching', () => {
-    return request(app)
-      .post('/api/echo-array?expected=doestnexist')
-      .set('Content-Type', 'application/json')
-      .send([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"])
-      .then((response) => {
-        expect(response.body['echo-body-content-type']).to.include('application/json');
-        expect(response.body['echo-body-2']).to.eql([0, -1, 2.3, null, true, "mytext", "2017-07-21T17:32:28Z"]);
-      })
-  });
-
-  it('should return 400 status for malformed array request body', () => {
-    return request(app)
-      .post('/api/echo-array')
-      .set('Content-Type', 'application/json')
-      .send({"key1": "value1"})
-      .then((response) => {
-        expect(response.body['error']['body']).to.eql({"key1": "value1"});
-      })
-  });
-
-});
-
 describe('GET /api/files/errors/:status', () => {
   [200, 400, 401, 403, 404, 405, 410, 500, 502, 503, 504].forEach((status) => {
     it('should return ' + status + ' status supplied in route parameter', () => {
@@ -720,6 +358,269 @@ describe('POST /api/all-types', () => {
       .send({'allTypesInputs': {'collectionInput': 'abc'}})
       .then((response) => {
         expect(response.body['outputs']['collectionOutput']).to.eql(null)
+      })
+  });
+});
+
+describe('GET /api/all-types/object', () => {
+
+  beforeEach(() => {
+    this.hardcoded = {
+      "text": "text1",
+      "decimal": 123.546,
+      "integer": 42,
+      "boolean": true,
+      "datetime": "2017-07-21T17:32:28Z",
+      "collection": ["text2", -543.21, 24, true, "2020-12-31T17:56:57Z"]
+    };
+  });
+
+  it('should return request headers in inputs object, downcased keys', () => {
+    return request(app)
+      .get('/api/all-types/object')
+      .set('Content-Type', 'application/json')
+      .set('Custom-Echo-Header', 'Random-Value-123')
+      .set('Another-Echo-Header', 'My value 456')
+      .then((response) => {
+        expect(response.body['inputs']['headers']['custom-echo-header']).to.eql('Random-Value-123');
+        expect(response.body['inputs']['headers']['another-echo-header']).to.eql('My value 456');
+      })
+  });
+
+  it('should return json response', () => {
+    return request(app)
+      .get('/api/all-types/object')
+      .set('Content-Type', 'application/json')
+      .send()
+      .then((response) => {
+        expect(response.headers['content-type']).to.include('application/json');
+      })
+  });  
+
+  it('should return hardcoded body in asObject', () => {
+    return request(app)
+      .get('/api/all-types/object')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString', () => {
+    return request(app)
+      .get('/api/all-types/object')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asObject if querystring is body', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=body')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString if querystring is body', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=body')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return empty object in asObject if querystring is literal "empty"', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=empty')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql({});
+      })
+  });
+
+  it('should return empty object in asString if querystring is literal "empty"', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=empty')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql({});
+      })
+  });
+
+  it('should return hardcoded body in asObject if querystring is "" empty string', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString if querystring is "" empty string', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded plaintext if requested in querystring', () => {
+      return request(app)
+      .get('/api/all-types/object?expected=plaintext')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.text).to.eql('this is a plaintext');
+      })
+  });
+
+  it('should return hardcoded body in asObject if querystring not matching', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=doesntexist')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString if querystring not matching', () => {
+    return request(app)
+      .get('/api/all-types/object?expected=doesntexist')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+});
+
+describe('GET /api/all-types/array', () => {
+
+  beforeEach(() => {
+    this.hardcoded = ["text1", 123.546, 42, true, "2017-07-21T17:32:28Z"];
+  });
+
+  it('should return request headers in inputs object, downcased keys', () => {
+    return request(app)
+      .get('/api/all-types/array')
+      .set('Content-Type', 'application/json')
+      .set('Custom-Echo-Header', 'Random-Value-123')
+      .set('Another-Echo-Header', 'My value 456')
+      .then((response) => {
+        expect(response.body['inputs']['headers']['custom-echo-header']).to.eql('Random-Value-123');
+        expect(response.body['inputs']['headers']['another-echo-header']).to.eql('My value 456');
+      })
+  });
+
+  it('should return json response', () => {
+    return request(app)
+      .get('/api/all-types/array')
+      .set('Content-Type', 'application/json')
+      .send()
+      .then((response) => {
+        expect(response.headers['content-type']).to.include('application/json');
+      })
+  });  
+
+  it('should return hardcoded body in asObject', () => {
+    return request(app)
+      .get('/api/all-types/array')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString', () => {
+    return request(app)
+      .get('/api/all-types/array')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asObject if querystring is body', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=body')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString if querystring is body', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=body')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return empty object in asObject if querystring is literal "empty"', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=empty')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql({});
+      })
+  });
+
+  it('should return empty object in asString if querystring is literal "empty"', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=empty')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql({});
+      })
+  });
+
+  it('should return hardcoded body in asObject if querystring is "" empty string', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString if querystring is "" empty string', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded plaintext if requested in querystring', () => {
+      return request(app)
+      .get('/api/all-types/array?expected=plaintext')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.text).to.eql('this is a plaintext');
+      })
+  });
+
+  it('should return hardcoded body in asObject if querystring not matching', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=doesntexist')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asObject']).to.eql(this.hardcoded);
+      })
+  });
+
+  it('should return hardcoded body in asString if querystring not matching', () => {
+    return request(app)
+      .get('/api/all-types/array?expected=doesntexist')
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['outputs']['object']['asString']).to.eql(this.hardcoded);
       })
   });
 });
