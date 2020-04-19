@@ -108,11 +108,14 @@
               "type": "object",
               "properties": {
                 "fileContent": {
+                  "description": "File to upload",
+                  "x-ntx-summary": "File to upload",
                   "type": "string",
                   "format": "byte"
                 },
                 "customName": {
                   "description": "Custom name with extension",
+                  "x-ntx-summary": "Custom name with extension",
                   "type": "string"
                 }
               }
