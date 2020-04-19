@@ -1,5 +1,6 @@
 const assert = require("assert");
 const expect = require("chai").expect;
+const fs = require("fs");
 const request = require("supertest");
 const validator = require("validator");
 const app = require("../../ExpressFunctionApp/app");
@@ -134,6 +135,25 @@ describe('GET /api/files/errors/:status', () => {
           expect(response.status).to.eql(status);
         })
     });
+  });
+});
+
+describe('POST /api/files/upload/base64', () => {
+  it('should return uploaded file information in response', () => {
+    const file = fs.readFileSync('tests/fixtures/nasilemak.jpg');
+    const content = file.toString('base64');
+
+    return request(app)
+      .post('/api/files/upload/base64')
+      .set('Content-Type', 'application/json')
+      .send({'fileContent': content, 'customName': 'nasilemak1.jpg'})
+      .then((response) => {
+        expect(response.status).to.eql(200);
+        expect(response.body['customName']).to.eql('nasilemak1.jpg');
+        expect(response.body['mimeType']).to.eql('image/jpeg');
+        expect(response.body['md5']).to.eql('e1a74395061dfe923b30546105fca578');
+        expect(response.body['size']).to.eql(3884192);
+      })
   });
 });
 

@@ -1,5 +1,7 @@
 const express = require("express");
 
+const crypto = require("crypto");
+const fileType = require("file-type");
 const fileUpload = require("express-fileupload");
 const jsonfile = require("jsonfile");
 const path = require("path");
@@ -9,7 +11,7 @@ const app = express();
 const asyncCallbackRoute = require("./routes/asyncCallback");
 const sleepRoute = require("./routes/sleep");
 
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded());
 app.use(fileUpload());
 
@@ -61,6 +63,22 @@ app.all('/api/echo/:status?', (req, res) => {
 
 app.get('/api/files/errors/:status', (req, res) => {
   res.status(req.params.status).send();
+});
+
+app.post('/api/files/upload/base64', async (req, res) => {
+
+  const buffer = Buffer.from(req.body["fileContent"], 'base64');
+  const mimeInfo = await fileType.fromBuffer(buffer);
+  const hash = crypto.createHash('md5').update(buffer).digest("hex");
+
+  let response = {
+    "customName": req.body["customName"],
+    "mimeType": mimeInfo["mime"],
+    "md5": hash,
+    "size": Buffer.byteLength(buffer, 'base64')
+  };
+
+  res.json(response);
 });
 
 app.post('/api/files/upload/form-data', (req, res) => {

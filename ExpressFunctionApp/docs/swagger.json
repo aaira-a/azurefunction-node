@@ -94,6 +94,63 @@
         }
       }
     },
+    "/files/upload/base64": {
+      "post": {
+        "summary": "Uploads file by base64",
+        "description": "Uploads file by base64",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "rootBody",
+            "description": "Root Body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fileContent": {
+                  "type": "string",
+                  "format": "byte"
+                },
+                "customName": {
+                  "description": "Custom name with extension",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "customName": {
+                  "type": "string",
+                  "description": "Custom file name Output",
+                  "x-ntx-summary": "Custom file name Output"
+                },
+                "mimeType": {
+                  "type": "string",
+                  "description": "MIME type Output",
+                  "x-ntx-summary": "MIME type Output"
+                },
+                "md5": {
+                  "type": "string",
+                  "description": "MD5 Output",
+                  "x-ntx-summary": "MD5 Output"
+                },
+                "size": {
+                  "type": "integer",
+                  "description": "File size Output",
+                  "x-ntx-summary": "File size Output"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/files/upload/form-data": {
       "post": {
         "summary": "Uploads file by multipart/form-data",
