@@ -63,7 +63,7 @@ app.get('/api/files/errors/:status', (req, res) => {
   res.status(req.params.status).send();
 });
 
-app.post('/api/files/upload-streaming', (req, res) => {
+app.post('/api/files/upload/form-data', (req, res) => {
   let response = {
     "originalName": req.files.file1.name,
     "customName": req.body["customName"],

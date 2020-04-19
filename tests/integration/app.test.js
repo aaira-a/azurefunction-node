@@ -137,10 +137,10 @@ describe('GET /api/files/errors/:status', () => {
   });
 });
 
-describe('POST /api/files/upload-streaming', () => {
+describe('POST /api/files/upload/form-data', () => {
   it('should return uploaded file information in response', () => {
     return request(app)
-      .post('/api/files/upload-streaming')
+      .post('/api/files/upload/form-data')
       .attach('file1', 'tests/fixtures/nasilemak.jpg')
       .field('customName', 'nasilemak1.jpg')
       .then((response) => {

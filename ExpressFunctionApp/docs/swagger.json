@@ -94,10 +94,10 @@
         }
       }
     },
-    "/files/upload-streaming": {
+    "/files/upload/form-data": {
       "post": {
-        "summary": "Uploads file by streaming",
-        "description": "Uploads file by streaming multipart/form-data",
+        "summary": "Uploads file by multipart/form-data",
+        "description": "Uploads file by multipart/form-data",
         "consumes": [
           "multipart/form-data"
         ],
