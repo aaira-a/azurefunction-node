@@ -1,5 +1,6 @@
 const express = require("express");
 
+const fileUpload = require("express-fileupload");
 const jsonfile = require("jsonfile");
 const path = require("path");
 
@@ -10,6 +11,7 @@ const sleepRoute = require("./routes/sleep");
 
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(fileUpload());
 
 app.use((req, res, next) => {
   if (req.headers.hasOwnProperty("x-apigateway-event")) {
@@ -59,6 +61,18 @@ app.all('/api/echo/:status?', (req, res) => {
 
 app.get('/api/files/errors/:status', (req, res) => {
   res.status(req.params.status).send();
+});
+
+app.post('/api/files/upload-streaming', (req, res) => {
+  let response = {
+    "originalName": req.files.file1.name,
+    "customName": req.body["customName"],
+    "mimeType": req.files.file1.mimetype,
+    "md5": req.files.file1.md5,
+    "size": req.files.file1.size
+  };
+
+  res.json(response);
 });
 
 app.post('/api/all-types', (req, res) => {

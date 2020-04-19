@@ -94,6 +94,65 @@
         }
       }
     },
+    "/files/upload-streaming": {
+      "post": {
+        "summary": "Uploads file by streaming",
+        "description": "Uploads file by streaming multipart/form-data",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "file1",
+            "description": "File to upload",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "in": "formData",
+            "name": "customName",
+            "description": "Custom name with extension",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "originalName": {
+                  "type": "string",
+                  "description": "Original file name Output",
+                  "x-ntx-summary": "Original file name Output"
+                },
+                "customName": {
+                  "type": "string",
+                  "description": "Custom file name Output",
+                  "x-ntx-summary": "Custom file name Output"
+                },
+                "mimeType": {
+                  "type": "string",
+                  "description": "MIME type Output",
+                  "x-ntx-summary": "MIME type Output"
+                },
+                "md5": {
+                  "type": "string",
+                  "description": "MD5 Output",
+                  "x-ntx-summary": "MD5 Output"
+                },
+                "size": {
+                  "type": "integer",
+                  "description": "File size Output",
+                  "x-ntx-summary": "File size Output"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/all-types": {
       "post": {
         "summary": "POST all variable types",
