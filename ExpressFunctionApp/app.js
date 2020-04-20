@@ -1,10 +1,13 @@
 const express = require("express");
 
 const axios = require("axios");
+const bodyParser = require("body-parser");
 const crypto = require("crypto");
 const fileType = require("file-type");
-const fileUpload = require("express-fileupload");
 const jsonfile = require("jsonfile");
+const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({storage: storage});
 const path = require("path");
 
 const app = express();
@@ -12,9 +15,10 @@ const app = express();
 const asyncCallbackRoute = require("./routes/asyncCallback");
 const sleepRoute = require("./routes/sleep");
 
+const octetStreamParser = bodyParser.raw({type: 'application/octet-stream', limit: '50mb'});
+
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded());
-app.use(fileUpload());
 
 app.use((req, res, next) => {
   if (req.headers.hasOwnProperty("x-apigateway-event")) {
@@ -82,13 +86,33 @@ app.post('/api/files/upload/base64', async (req, res) => {
   res.json(response);
 });
 
-app.post('/api/files/upload/form-data', (req, res) => {
+app.post('/api/files/upload/form-data', upload.single('file1'), (req, res) => {
+
+  const buffer = Buffer.from(req.file.buffer, 'base64');
+  const hash = crypto.createHash('md5').update(buffer).digest("hex");
+
   let response = {
-    "originalName": req.files.file1.name,
+    "originalName": req.file.originalname,
     "customName": req.body["customName"],
-    "mimeType": req.files.file1.mimetype,
-    "md5": req.files.file1.md5,
-    "size": req.files.file1.size
+    "mimeType": req.file.mimetype,
+    "md5": hash,
+    "size": req.file.size
+  };
+
+  res.json(response);
+});
+
+app.post('/api/files/upload/octet-stream', octetStreamParser, async (req, res) => {
+
+  const mimeInfo = await fileType.fromBuffer(req.body);
+  const hash = crypto.createHash('md5').update(req.body).digest("hex");
+
+  let response = {
+    "originalName": req.headers["content-disposition"].split("filename=")[1],
+    "customName": req.headers["custom-name"],
+    "mimeType": mimeInfo["mime"],
+    "md5": hash,
+    "size": Buffer.byteLength(req.body)
   };
 
   res.json(response);
