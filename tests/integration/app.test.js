@@ -176,17 +176,17 @@ describe('POST /api/files/upload/form-data', () => {
 
 describe('POST /api/files/upload/uri', () => {
   it('should return uploaded file information in response', () => {
-    const fileUri = 'https://azamstatic.blob.core.windows.net/static/nasilemak.jpg';
+    const fileUri = 'https://azamstatic.blob.core.windows.net/static/publicdomain.png';
     return request(app)
       .post('/api/files/upload/uri')
       .set('Content-Type', 'application/json')
-      .send({'fileUri': fileUri, 'customName': 'nasilemak1.jpg'})
+      .send({'fileUri': fileUri, 'customName': 'publicdomain1.png'})
       .then((response) => {
         expect(response.status).to.eql(200);
-        expect(response.body['customName']).to.eql('nasilemak1.jpg');
-        expect(response.body['mimeType']).to.eql('image/jpeg');
-        expect(response.body['md5']).to.eql('e1a74395061dfe923b30546105fca578');
-        expect(response.body['size']).to.eql(3884192);
+        expect(response.body['customName']).to.eql('publicdomain1.png');
+        expect(response.body['mimeType']).to.eql('image/png');
+        expect(response.body['md5']).to.eql('c9469b266705cf08cfa37f0cf834d11f');
+        expect(response.body['size']).to.eql(6592);
       })
   });
 });
