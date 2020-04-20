@@ -1,5 +1,6 @@
 const express = require("express");
 
+const axios = require("axios");
 const crypto = require("crypto");
 const fileType = require("file-type");
 const fileUpload = require("express-fileupload");
@@ -91,6 +92,31 @@ app.post('/api/files/upload/form-data', (req, res) => {
   };
 
   res.json(response);
+});
+
+app.post('/api/files/upload/uri', async (req, res) => {
+  let sourceUri = req.body["fileUri"];
+
+  axios({
+    method: 'get',
+    url: sourceUri,
+    responseType: 'arraybuffer'
+  })
+  .then(async (downloaded) => {
+    const buffer = Buffer.from(downloaded.data, 'base64');
+    const mimeInfo = await fileType.fromBuffer(buffer);
+    const hash = crypto.createHash('md5').update(buffer).digest("hex");
+
+    let response = {
+      "customName": req.body["customName"],
+      "mimeType": mimeInfo["mime"],
+      "md5": hash,
+      "size": Buffer.byteLength(buffer, 'base64')
+    };
+    
+    res.json(response);
+  });
+
 });
 
 app.post('/api/all-types', (req, res) => {
