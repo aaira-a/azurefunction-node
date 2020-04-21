@@ -212,6 +212,22 @@ describe('POST /api/files/upload/octet-stream', () => {
   });
 });
 
+describe('GET /api/files/download/uri', () => {
+  it('should return file uri in response', () => {
+    const fileUri = 'https://azamstatic.blob.core.windows.net/static/publicdomain.png';
+    return request(app)
+      .get('/api/files/download/uri')
+      .then((response) => {
+        expect(response.status).to.eql(200);
+        expect(response.body['uri']).to.eql(fileUri);
+        expect(response.body['originalName']).to.eql('publicdomain.png');
+        expect(response.body['mimeType']).to.eql('image/png');
+        expect(response.body['md5']).to.eql('c9469b266705cf08cfa37f0cf834d11f');
+        expect(response.body['size']).to.eql(6592);
+      })
+  });
+});
+
 describe('POST /api/files/upload/uri', () => {
   it('should return uploaded file information in response', () => {
     const fileUri = 'https://azamstatic.blob.core.windows.net/static/publicdomain.png';

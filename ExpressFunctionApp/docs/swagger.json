@@ -315,6 +315,48 @@
         }
       }
     },
+    "/files/download/uri": {
+      "get": {
+        "summary": "Downloads file by URI",
+        "description": "Downloads file by URI",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "uri": {
+                  "description": "File do download",
+                  "x-ntx-summary": "File to download",
+                  "type": "string",
+                  "format": "x-ntx-file-reference"
+                },
+                "originalName": {
+                  "type": "string",
+                  "description": "Original file name Output",
+                  "x-ntx-summary": "Original file name Output"
+                },
+                "mimeType": {
+                  "type": "string",
+                  "description": "MIME type Output",
+                  "x-ntx-summary": "MIME type Output"
+                },
+                "md5": {
+                  "type": "string",
+                  "description": "MD5 Output",
+                  "x-ntx-summary": "MD5 Output"
+                },
+                "size": {
+                  "type": "integer",
+                  "description": "File size Output",
+                  "x-ntx-summary": "File size Output"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/files/upload/uri": {
       "post": {
         "summary": "Uploads file by URI",

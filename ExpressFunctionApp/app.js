@@ -141,6 +141,19 @@ app.post('/api/files/upload/octet-stream', octetStreamParser, async (req, res) =
 
 });
 
+app.get('/api/files/download/uri', (req, res) => {
+
+  let response = {
+    "uri": 'https://azamstatic.blob.core.windows.net/static/publicdomain.png',
+    "originalName": "publicdomain.png",
+    "mimeType": "image/png",
+    "md5": 'c9469b266705cf08cfa37f0cf834d11f',
+    "size": 6592
+  };
+
+  res.json(response);
+});
+
 app.post('/api/files/upload/uri', async (req, res) => {
   let sourceUri = req.body["fileUri"];
 
