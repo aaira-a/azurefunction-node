@@ -138,6 +138,24 @@ describe('GET /api/files/errors/:status', () => {
   });
 });
 
+describe('GET /api/files/download/base64', () => {
+  it('should return file in response', () => {
+    const file = fs.readFileSync('ExpressFunctionApp/files/publicdomain.png');
+    const content = file.toString('base64');
+
+    return request(app)
+      .get('/api/files/download/base64')
+      .then((response) => {
+        expect(response.status).to.eql(200);
+        expect(response.body['fileContent']).to.eql(content);
+        expect(response.body['originalName']).to.eql('publicdomain.png');
+        expect(response.body['mimeType']).to.eql('image/png');
+        expect(response.body['md5']).to.eql('c9469b266705cf08cfa37f0cf834d11f');
+        expect(response.body['size']).to.eql(6592);
+      })
+  });
+});
+
 describe('POST /api/files/upload/base64', () => {
   it('should return uploaded file information in response', () => {
     const file = fs.readFileSync('tests/fixtures/nasilemak.jpg');
