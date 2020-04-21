@@ -104,18 +104,22 @@ app.post('/api/files/upload/form-data', upload.single('file1'), (req, res) => {
 
 app.post('/api/files/upload/octet-stream', octetStreamParser, async (req, res) => {
 
-  const mimeInfo = await fileType.fromBuffer(req.body);
   const hash = crypto.createHash('md5').update(req.body).digest("hex");
+  const mimeInfo = await fileType.fromBuffer(req.body)
+    .then((result) => {
 
-  let response = {
-    "originalName": req.headers["content-disposition"].split("filename=")[1],
-    "customName": req.headers["custom-name"],
-    "mimeType": mimeInfo["mime"],
-    "md5": hash,
-    "size": Buffer.byteLength(req.body)
-  };
+      let response = {
+        "originalName": req.headers["content-disposition"].split("filename=")[1],
+        "customName": req.headers["custom-name"],
+        "mimeType": result["mime"],
+        "md5": hash,
+        "size": Buffer.byteLength(req.body)
+      };
 
-  res.json(response);
+      res.json(response);
+
+    });
+
 });
 
 app.post('/api/files/upload/uri', async (req, res) => {
