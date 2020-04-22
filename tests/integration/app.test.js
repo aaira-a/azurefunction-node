@@ -179,8 +179,13 @@ describe('POST /api/files/upload/form-data', () => {
   it('should return uploaded file information in response', () => {
     return request(app)
       .post('/api/files/upload/form-data')
-      .attach('file1', 'tests/fixtures/nasilemak.jpg')
+      .set('Content-Type', 'multipart/form-data')
       .field('customName', 'nasilemak1.jpg')
+      .attach(
+        'file1',
+        'tests/fixtures/nasilemak.jpg',
+        { contentType: 'application/octet-stream', filename: 'nasilemak.jpg'}
+      )
       .then((response) => {
         expect(response.status).to.eql(200);
         expect(response.body['originalName']).to.eql('nasilemak.jpg');

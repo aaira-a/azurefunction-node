@@ -105,15 +105,16 @@ app.post('/api/files/upload/base64', async (req, res) => {
   res.json(response);
 });
 
-app.post('/api/files/upload/form-data', upload.single('file1'), (req, res) => {
+app.post('/api/files/upload/form-data', upload.single('file1'), async (req, res) => {
 
   const buffer = Buffer.from(req.file.buffer, 'base64');
+  const mimeInfo = await fileType.fromBuffer(buffer);
   const hash = crypto.createHash('md5').update(buffer).digest("hex");
 
   let response = {
     "originalName": req.file.originalname,
     "customName": req.body["customName"],
-    "mimeType": req.file.mimetype,
+    "mimeType": mimeInfo["mime"],
     "md5": hash,
     "size": req.file.size
   };
