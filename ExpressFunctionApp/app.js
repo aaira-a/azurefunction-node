@@ -1,22 +1,13 @@
 const express = require("express");
 
 const axios = require("axios");
-const bodyParser = require("body-parser");
-const crypto = require("crypto");
-const fileType = require("file-type");
-const fs = require("fs");
 const jsonfile = require("jsonfile");
-const multer = require("multer");
-const storage = multer.memoryStorage();
-const upload = multer({storage: storage});
 const path = require("path");
 
 const app = express();
 
 const asyncCallbackRoute = require("./routes/asyncCallback");
 const sleepRoute = require("./routes/sleep");
-
-const octetStreamParser = bodyParser.raw({type: 'application/octet-stream', limit: '50mb'});
 
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded());
@@ -69,115 +60,6 @@ app.all('/api/echo/:status?', (req, res) => {
 
 app.get('/api/files/errors/:status', (req, res) => {
   res.status(req.params.status).send();
-});
-
-app.get('/api/files/download/base64', (req, res) => {
-  const filepath = path.join(__dirname, 'files', 'publicdomain.png');
-  const file = fs.readFileSync(filepath);
-
-  const content = file.toString('base64');
-  const hash = crypto.createHash('md5').update(file).digest("hex");
-
-  let response = {
-    "fileContent": content,
-    "originalName": "publicdomain.png",
-    "mimeType": "image/png",
-    "md5": hash,
-    "size": Buffer.byteLength(file)
-  };
-
-  res.json(response);
-});
-
-app.post('/api/files/upload/base64', async (req, res) => {
-
-  const buffer = Buffer.from(req.body["fileContent"], 'base64');
-  const mimeInfo = await fileType.fromBuffer(buffer);
-  const hash = crypto.createHash('md5').update(buffer).digest("hex");
-
-  let response = {
-    "customName": req.body["customName"],
-    "mimeType": mimeInfo["mime"],
-    "md5": hash,
-    "size": Buffer.byteLength(buffer, 'base64')
-  };
-
-  res.json(response);
-});
-
-app.post('/api/files/upload/form-data', upload.single('file1'), async (req, res) => {
-
-  const buffer = Buffer.from(req.file.buffer, 'binary');
-  const mimeInfo = await fileType.fromBuffer(buffer);
-  const hash = crypto.createHash('md5').update(buffer).digest("hex");
-
-  let response = {
-    "originalName": req.file.originalname,
-    "customName": req.body["customName"],
-    "mimeType": mimeInfo["mime"],
-    "md5": hash,
-    "size": req.file.size
-  };
-
-  res.json(response);
-});
-
-app.post('/api/files/upload/octet-stream', octetStreamParser, async (req, res) => {
-
-  const hash = crypto.createHash('md5').update(req.body).digest("hex");
-  const mimeInfo = await fileType.fromBuffer(req.body)
-    .then((result) => {
-
-      let response = {
-        "originalName": req.headers["content-disposition"].split("filename=")[1],
-        "customName": req.headers["custom-name"],
-        "mimeType": result["mime"],
-        "md5": hash,
-        "size": Buffer.byteLength(req.body)
-      };
-
-      res.json(response);
-
-    });
-
-});
-
-app.get('/api/files/download/uri', (req, res) => {
-
-  let response = {
-    "uri": 'https://azamstatic.blob.core.windows.net/static/publicdomain.png',
-    "originalName": "publicdomain.png",
-    "mimeType": "image/png",
-    "md5": 'c9469b266705cf08cfa37f0cf834d11f',
-    "size": 6592
-  };
-
-  res.json(response);
-});
-
-app.post('/api/files/upload/uri', async (req, res) => {
-  let sourceUri = req.body["fileUri"];
-
-  axios({
-    method: 'get',
-    url: sourceUri,
-    responseType: 'arraybuffer'
-  })
-  .then(async (downloaded) => {
-    const buffer = Buffer.from(downloaded.data, 'base64');
-    const mimeInfo = await fileType.fromBuffer(buffer);
-    const hash = crypto.createHash('md5').update(buffer).digest("hex");
-
-    let response = {
-      "customName": req.body["customName"],
-      "mimeType": mimeInfo["mime"],
-      "md5": hash,
-      "size": Buffer.byteLength(buffer, 'base64')
-    };
-    
-    res.json(response);
-  });
-
 });
 
 app.post('/api/all-types', (req, res) => {

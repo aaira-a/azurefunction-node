@@ -1,6 +1,5 @@
 const assert = require("assert");
 const expect = require("chai").expect;
-const fs = require("fs");
 const request = require("supertest");
 const validator = require("validator");
 const app = require("../../ExpressFunctionApp/app");
@@ -135,118 +134,6 @@ describe('GET /api/files/errors/:status', () => {
           expect(response.status).to.eql(status);
         })
     });
-  });
-});
-
-describe('GET /api/files/download/base64', () => {
-  it('should return file in response', () => {
-    const file = fs.readFileSync('ExpressFunctionApp/files/publicdomain.png');
-    const content = file.toString('base64');
-
-    return request(app)
-      .get('/api/files/download/base64')
-      .then((response) => {
-        expect(response.status).to.eql(200);
-        expect(response.body['fileContent']).to.eql(content);
-        expect(response.body['originalName']).to.eql('publicdomain.png');
-        expect(response.body['mimeType']).to.eql('image/png');
-        expect(response.body['md5']).to.eql('c9469b266705cf08cfa37f0cf834d11f');
-        expect(response.body['size']).to.eql(6592);
-      })
-  });
-});
-
-describe('POST /api/files/upload/base64', () => {
-  it('should return uploaded file information in response', () => {
-    const file = fs.readFileSync('tests/fixtures/nasilemak.jpg');
-    const content = file.toString('base64');
-
-    return request(app)
-      .post('/api/files/upload/base64')
-      .set('Content-Type', 'application/json')
-      .send({'fileContent': content, 'customName': 'nasilemak1.jpg'})
-      .then((response) => {
-        expect(response.status).to.eql(200);
-        expect(response.body['customName']).to.eql('nasilemak1.jpg');
-        expect(response.body['mimeType']).to.eql('image/jpeg');
-        expect(response.body['md5']).to.eql('e1a74395061dfe923b30546105fca578');
-        expect(response.body['size']).to.eql(3884192);
-      })
-  });
-});
-
-describe('POST /api/files/upload/form-data', () => {
-  it('should return uploaded file information in response', () => {
-    return request(app)
-      .post('/api/files/upload/form-data')
-      .set('Content-Type', 'multipart/form-data')
-      .field('customName', 'nasilemak1.jpg')
-      .attach(
-        'file1',
-        'tests/fixtures/nasilemak.jpg',
-        { contentType: 'application/octet-stream', filename: 'nasilemak.jpg'}
-      )
-      .then((response) => {
-        expect(response.status).to.eql(200);
-        expect(response.body['originalName']).to.eql('nasilemak.jpg');
-        expect(response.body['customName']).to.eql('nasilemak1.jpg');
-        expect(response.body['mimeType']).to.eql('image/jpeg');
-        expect(response.body['md5']).to.eql('e1a74395061dfe923b30546105fca578');
-        expect(response.body['size']).to.eql(3884192);
-      })
-  });
-});
-
-describe('POST /api/files/upload/octet-stream', () => {
-  it('should return uploaded file information in response', () => {
-    const file = fs.readFileSync('tests/fixtures/nasilemak.jpg');
-    return request(app)
-      .post('/api/files/upload/octet-stream')
-      .set('Content-Type', 'application/octet-stream')
-      .set('Content-Disposition', 'attachment; filename=nasilemak.jpg')
-      .set('Custom-Name', 'nasilemak1.jpg')
-      .send(file)
-      .then((response) => {
-        expect(response.status).to.eql(200);
-        expect(response.body['originalName']).to.eql('nasilemak.jpg');
-        expect(response.body['customName']).to.eql('nasilemak1.jpg');
-        expect(response.body['mimeType']).to.eql('image/jpeg');
-        expect(response.body['md5']).to.eql('e1a74395061dfe923b30546105fca578');
-        expect(response.body['size']).to.eql(3884192);
-      })
-  });
-});
-
-describe('GET /api/files/download/uri', () => {
-  it('should return file uri in response', () => {
-    const fileUri = 'https://azamstatic.blob.core.windows.net/static/publicdomain.png';
-    return request(app)
-      .get('/api/files/download/uri')
-      .then((response) => {
-        expect(response.status).to.eql(200);
-        expect(response.body['uri']).to.eql(fileUri);
-        expect(response.body['originalName']).to.eql('publicdomain.png');
-        expect(response.body['mimeType']).to.eql('image/png');
-        expect(response.body['md5']).to.eql('c9469b266705cf08cfa37f0cf834d11f');
-        expect(response.body['size']).to.eql(6592);
-      })
-  });
-});
-
-describe('POST /api/files/upload/uri', () => {
-  it('should return uploaded file information in response', () => {
-    const fileUri = 'https://azamstatic.blob.core.windows.net/static/publicdomain.png';
-    return request(app)
-      .post('/api/files/upload/uri')
-      .set('Content-Type', 'application/json')
-      .send({'fileUri': fileUri, 'customName': 'publicdomain1.png'})
-      .then((response) => {
-        expect(response.status).to.eql(200);
-        expect(response.body['customName']).to.eql('publicdomain1.png');
-        expect(response.body['mimeType']).to.eql('image/png');
-        expect(response.body['md5']).to.eql('c9469b266705cf08cfa37f0cf834d11f');
-        expect(response.body['size']).to.eql(6592);
-      })
   });
 });
 
