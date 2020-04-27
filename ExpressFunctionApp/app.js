@@ -1,6 +1,7 @@
 const express = require("express");
 
 const axios = require("axios");
+const bodyParser = require("body-parser");
 const jsonfile = require("jsonfile");
 const path = require("path");
 
@@ -8,6 +9,8 @@ const app = express();
 
 const asyncCallbackRoute = require("./routes/asyncCallback");
 const sleepRoute = require("./routes/sleep");
+
+const plainTextParser = bodyParser.text();
 
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded());
@@ -44,13 +47,41 @@ app.all('/api/echo/:status?', (req, res) => {
   response["echo-headers"] = req.headers;
   response["echo-qs"] = req.query;
 
-  if (req.headers.hasOwnProperty("content-type")) {
-    response["echo-body-content-type"] = req.headers["content-type"]
+  response = {...response, ...req.body};
+
+  if (req.params.status !== undefined) {
+    res.status(req.params.status).json(response);
+  }
+  res.json(response);
+})
+
+app.all('/api/echo-from-text/:status?', plainTextParser, (req, res) => {
+  let response = {};
+
+  response["echo-method"] = req.method;
+  response["echo-headers"] = req.headers;
+  response["echo-qs"] = req.query;
+  response["echo-body-text"] = req.body;
+
+  function convertToJson(data){
+    try {
+      let parsed = JSON.parse(data);
+
+      if (parsed instanceof Object) {
+        return parsed;
+      }
+      else {
+        return JSON.parse(parsed);
+      }
+    }
+    catch(error) {
+      return null;
+    }
   }
 
-  if (req.hasOwnProperty("body")) {
-    response["echo-body"] = req.body;
-  }
+  let parsed = convertToJson(req.body);
+
+  response = {...parsed, ...response};
 
   if (req.params.status !== undefined) {
     res.status(req.params.status).json(response);
