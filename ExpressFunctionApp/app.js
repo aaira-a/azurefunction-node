@@ -46,6 +46,7 @@ app.all('/api/echo/:status?', (req, res) => {
   response["echo-method"] = req.method;
   response["echo-headers"] = req.headers;
   response["echo-qs"] = req.query;
+  response["echo-originalurl"] = req.originalUrl;
 
   if (req.headers.hasOwnProperty("content-type")) {
     response["echo-body-content-type"] = req.headers["content-type"]
