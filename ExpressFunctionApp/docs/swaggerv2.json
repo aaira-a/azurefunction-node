@@ -2,9 +2,10 @@
   "swagger": "2.0",
   "info": {
     "version": "0.0.1",
-    "title": "Az Function Mock Web Service",
-    "description": "Azure Function Mock Web Service"
+    "title": "Az Function Mock Web Service V2",
+    "description": "Azure Function Mock Web Service V2"
   },
+  "x-ntx-render-version": 2,
   "host": "azamwebsvc.azurewebsites.net",
   "basePath": "/api",
   "schemes": [
@@ -21,6 +22,14 @@
       "get": {
         "summary": "Get this Swagger 2.0 definition",
         "description": "Get this Swagger 2.0 definition",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "custom1",
+            "in": "header",
+            "description": "random unused header value"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -35,6 +44,14 @@
       "get": {
         "summary": "Get this Swagger 2.0 definition Version 2",
         "description": "Get this Swagger 2.0 definition Version 2",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "custom1",
+            "in": "header",
+            "description": "random unused header value"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -149,6 +166,14 @@
         "description": "Download file as base64",
         "x-ntx-host": "app.sidebox.es",
         "x-ntx-basePath": "/api",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "custom1",
+            "in": "header",
+            "description": "random unused header value"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -191,6 +216,14 @@
         "description": "Download multiple files as base64",
         "x-ntx-host": "app.sidebox.es",
         "x-ntx-basePath": "/api",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "custom1",
+            "in": "header",
+            "description": "random unused header value"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -246,6 +279,14 @@
         "description": "Download multiple files as base64 in flattened array",
         "x-ntx-host": "app.sidebox.es",
         "x-ntx-basePath": "/api",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "custom1",
+            "in": "header",
+            "description": "random unused header value"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -592,6 +633,14 @@
         "description": "Download file as octet-stream",
         "x-ntx-host": "app.sidebox.es",
         "x-ntx-basePath": "/api",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "custom1",
+            "in": "header",
+            "description": "random unused header value"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -667,6 +716,14 @@
         "description": "Download file as URI",
         "x-ntx-host": "app.sidebox.es",
         "x-ntx-basePath": "/api",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "custom1",
+            "in": "header",
+            "description": "random unused header value"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -711,6 +768,14 @@
         "description": "Download multiple files as URI",
         "x-ntx-host": "app.sidebox.es",
         "x-ntx-basePath": "/api",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "custom1",
+            "in": "header",
+            "description": "random unused header value"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -768,6 +833,14 @@
         "description": "Download multiple files as URI in flattened array",
         "x-ntx-host": "app.sidebox.es",
         "x-ntx-basePath": "/api",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "custom1",
+            "in": "header",
+            "description": "random unused header value"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1387,6 +1460,14 @@
       "get": {
         "summary": "GET response after 75 seconds",
         "description": "GET response after 75 seconds",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "custom1",
+            "in": "header",
+            "description": "random unused header value"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
