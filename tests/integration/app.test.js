@@ -731,6 +731,39 @@ describe('GET /api/all-types/array', () => {
   });
 });
 
+describe('POST /api/all-types-stringified', () => {
+
+  it('should return valid json request body as string', () => {
+    return request(app)
+      .post('/api/all-types-stringified')
+      .set('Content-Type', 'application/json')
+      .send({'any': {'key1': 'value1'}})
+      .then((response) => {
+        expect(response.body['allTypesOutputsStringified']).to.eql('{"any":{"key1":"value1"}}');
+      })
+  });
+
+  it('should return json request body with null property as string', () => {
+    return request(app)
+      .post('/api/all-types-stringified')
+      .set('Content-Type', 'application/json')
+      .send({'key1': null})
+      .then((response) => {
+        expect(response.body['allTypesOutputsStringified']).to.eql('{"key1":null}');
+      })
+  });
+
+  it('should return empty request body as string', () => {
+    return request(app)
+      .post('/api/all-types-stringified')
+      .set('Content-Type', 'application/json')
+      .send({})
+      .then((response) => {
+        expect(response.body['allTypesOutputsStringified']).to.eql('{}');
+      })
+  });
+});
+
 describe('POST /api/all-parameter-types/:string_path/:integer_path/:boolean_path', () => {
   
   it('should return all parameters in output', () => {

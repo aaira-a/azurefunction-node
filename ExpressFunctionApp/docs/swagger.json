@@ -1044,6 +1044,37 @@
         }
       }
     },
+    "/all-types-stringified": {
+      "post": {
+        "summary": "POST all variable types and return stringified data",
+        "description": "PPOST all variable types and return stringified data",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "rootBody",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/rootBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "allTypesOutputsStringified": {
+                  "type": "string",
+                  "description": "Logged Request Inputs as String",
+                  "x-ntx-summary": "Logged Request Inputs as String"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/all-parameter-types/{string-path}/{integer-path}/{boolean-path}": {
       "post": {
         "summary": "POST all parameter types",

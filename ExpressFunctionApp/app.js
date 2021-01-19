@@ -242,6 +242,14 @@ app.get('/api/all-types/array', (req, res) => {
   res.json(response);
 });
 
+app.post('/api/all-types-stringified', (req, res) => {
+  let response = {};
+
+  response["allTypesOutputsStringified"] = JSON.stringify(req.body);
+
+  res.json(response);
+});
+
 app.post('/api/all-parameter-types/:string_path/:integer_path/:boolean_path', (req, res) => {
   let response = {};
 
