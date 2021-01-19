@@ -250,6 +250,14 @@ app.post('/api/all-types-stringified', (req, res) => {
   res.json(response);
 });
 
+app.post('/api/all-types-odata', (req, res) => {
+  let response = {};
+
+  response["allTypesOutputsStringified"] = req.query["odata"];
+
+  res.json(response);
+});
+
 app.post('/api/all-parameter-types/:string_path/:integer_path/:boolean_path', (req, res) => {
   let response = {};
 

@@ -764,6 +764,48 @@ describe('POST /api/all-types-stringified', () => {
   });
 });
 
+describe('POST /api/all-types-odata', () => {
+
+  it('should return odata querystring as string', () => {
+    return request(app)
+      .post("/api/all-types-odata?odata=substringof('needle', haystack) and dec gt 0.001 and bool eq true")
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['allTypesOutputsStringified']).to.eql("substringof('needle', haystack) and dec gt 0.001 and bool eq true");
+      })
+  });
+
+  it('should return unmodified urlencoded odata querystring as string', () => {
+    return request(app)
+      .post("/api/all-types-odata?odata=substringof(%27needle%27%2Chaystack)%20and%20deci%20gt%0.001and%20bool%20eq%20true")
+      .set('Content-Type', 'application/json')
+      .then((response) => {
+        expect(response.body['allTypesOutputsStringified']).to.eql("substringof(%27needle%27%2Chaystack)%20and%20deci%20gt%0.001and%20bool%20eq%20true");
+      })
+  });
+
+  it('should return odata querystring with explicit null as string', () => {
+    return request(app)
+      .post('/api/all-types-odata?odata=decimal gt null and integer ge null and boolean eq null')
+      .set('Content-Type', 'application/json')
+      .send({})
+      .then((response) => {
+        expect(response.body['allTypesOutputsStringified']).to.eql('decimal gt null and integer ge null and boolean eq null');
+      })
+  });
+
+  it('should return empty odata querystring as string', () => {
+    return request(app)
+      .post('/api/all-types-odata?odata=')
+      .set('Content-Type', 'application/json')
+      .send({'key1': null})
+      .then((response) => {
+        expect(response.body['allTypesOutputsStringified']).to.eql('');
+      })
+  });
+
+});
+
 describe('POST /api/all-parameter-types/:string_path/:integer_path/:boolean_path', () => {
   
   it('should return all parameters in output', () => {

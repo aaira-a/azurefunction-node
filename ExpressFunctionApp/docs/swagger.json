@@ -1047,7 +1047,7 @@
     "/all-types-stringified": {
       "post": {
         "summary": "POST all variable types and return stringified data",
-        "description": "PPOST all variable types and return stringified data",
+        "description": "POST all variable types and return stringified data",
         "parameters": [
           {
             "in": "body",
@@ -1055,6 +1055,68 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/rootBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "allTypesOutputsStringified": {
+                  "type": "string",
+                  "description": "Logged Request Inputs as String",
+                  "x-ntx-summary": "Logged Request Inputs as String"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/all-types-odata": {
+      "post": {
+        "summary": "POST all variable types as oData and return stringified data",
+        "description": "POST all variable types as oData and return stringified data",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "odata",
+            "required": true,
+            "type": "string",
+            "x-ntx-query-builder": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "textInput": {
+                    "type": "string",
+                    "description": "Text Input",
+                    "x-ntx-summary": "Text Input"
+                  },
+                  "decimalInput": {
+                    "type": "number",
+                    "description": "Decimal Input",
+                    "x-ntx-summary": "Decimal Input"
+                  },
+                  "integerInput": {
+                    "type": "integer",
+                    "description": "Integer Input",
+                    "x-ntx-summary": "Integer Input"
+                  },
+                  "booleanInput": {
+                    "type": "boolean",
+                    "description": "Boolean Input",
+                    "x-ntx-summary": "Boolean Input"
+                  },
+                  "datetimeInput": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Datetime Input",
+                    "x-ntx-summary": "Datetime Input"
+                  }
+                }
+              }
             }
           }
         ],
