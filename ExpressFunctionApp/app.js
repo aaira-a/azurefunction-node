@@ -2,6 +2,8 @@ const express = require("express");
 
 const axios = require("axios");
 const bodyParser = require("body-parser");
+const crypto = require("crypto");
+const fs = require("fs");
 const jsonfile = require("jsonfile");
 const path = require("path");
 
@@ -254,6 +256,112 @@ app.post('/api/all-types-odata', (req, res) => {
   let response = {};
 
   response["allTypesOutputsStringified"] = req.query["odata"];
+
+  res.json(response);
+});
+
+app.get('/api/all-types-nullable', (req, res) => {
+
+  function generateFileDetails(fileName) {
+    const filepath = path.join(__dirname, 'files', fileName);
+    const file = fs.readFileSync(filepath);
+
+    const content = file.toString('base64');
+    const hash = crypto.createHash('md5').update(file).digest("hex");
+
+    let fileDetails = {
+      "fileContent": content,
+      "originalName": fileName,
+      "mimeType": "image/png",
+      "md5": hash,
+      "size": Buffer.byteLength(file)
+    };
+
+    return fileDetails;
+  };
+
+  let response = {};
+
+  let validValues = {
+    "textOutput": "primitive text 1",
+    "decimalOutput": 111,
+    "integerOutput": 123456.789,
+    "booleanOutput": true,
+    "datetimeOutput": "2021-02-01T17:28:18.686Z",
+    "fileOutput": generateFileDetails("CharA.png"),
+    "textCollectionOutput": ["abc", "def", "ghi"],
+    "decimalCollectionOutput": [1.1, 2.2, 3.3],
+    "integerCollectionOutput": [4, 5, 6],
+    "booleanCollectionOutput": [true, false, true],
+    "datetimeCollectionOutput": [
+      "2021-02-01T17:23:56.139Z",
+      "2022-02-01T17:23:56.139Z",
+      "2023-02-01T17:23:56.139Z",
+    ],
+    "fileCollectionOutput": [
+      "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACySURBVEhL7ZPRDoAgCEW1//9nY+GYS5QL07VV5yVrdY8I5VJK2slRr9v4BSZKk3POdaXhHYqhYBTU6hGZLoC+nO5DiPcA2QTx2TGlBoCtcgs4mhbre9BGg+kENKaSy7cujAquTcfTCb2CuuoIaKAjYkTs0jiaTLkcPSmxxz2mrMEdboEAOoICPiuEeAUgDwnM88WbDP1o6jtgG+wfTXzykJ/EBSq3ssCvCFQQ5q1juoyUTo3XchvVQmDSAAAAAElFTkSuQmCC",
+      "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACVSURBVEhL7ZXBDsAgCENl///PromeDKKRgsmyd9lO7VqRSa21RPL0Zxi/wZKtQxaR/qZhK6wNmvrxsC0qcqoDy8CvDqYGFHVgJfCrg/Ax1Q3QD+XzwY0E7XhZ6AlY/YD0irj9ACUBsR+QXhGd0QD9ZIwpEd2AGELfOYOBZ652f5ngzGZ3axql2Qq0tTzjexeNTrBBKS/XbjwlavjApAAAAABJRU5ErkJggg==",
+      "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAC7SURBVFhH7ZfRCoAgDEW1///n6oIDsXRX3RDKA1EP5Y7XJRXPm7CQI52XsQXUHogxpqsnFu1DCdRuyeVGZaaWAEXlgEwrrRpmPZCL9GDehL1puLwFkACMRFMAA8hgvbDPuSQgMD3hKsDwD4HWMrgLaM34/SXQXmVXgemNyIJlPcDuoi4CTPSCWwLM7IGpAGbORi+YCUjsPcWBicBocWCWwEhx0PwqLtdTZloyWhyoAiUzxd7YP6eLBUK4ACJ7Yx0sF/V/AAAAAElFTkSuQmCC",
+  ],
+    "ObjectCollectionOutput": [
+      {
+        "textOutput": "obj1",
+        "decimalOutput": 7.7,
+        "integerOutput": -1,
+        "booleanOutput": true,
+        "datetimeOutput": "2025-02-01T17:23:56.139Z",
+        "fileOutput": generateFileDetails("CharE.png")
+      },
+      {
+        "textOutput": "obj2",
+        "decimalOutput": 8.8,
+        "integerOutput": -2,
+        "booleanOutput": true,
+        "datetimeOutput": "2026-02-01T17:23:56.139Z",
+        "fileOutput": generateFileDetails("CharF.png")
+      }
+    ]
+  };
+
+  let explicitNull = {
+    "textOutput": null,
+    "decimalOutput": null,
+    "integerOutput": null,
+    "booleanOutput": null,
+    "datetimeOutput": null,
+    "fileOutput": null,
+    "textCollectionOutput": null,
+    "decimalCollectionOutput": null,
+    "integerCollectionOutput": null,
+    "booleanCollectionOutput": null,
+    "datetimeCollectionOutput": null,
+    "fileCollectionOutput": null,
+    "ObjectCollectionOutput": null
+  };
+
+  let missingProperty = {};
+
+  if (req.query.hasOwnProperty("expected")) {
+    switch (req.query["expected"]) {
+      case '':
+        response["outputs"] = validValues;
+        break;
+      case 'validValues':
+        response["outputs"] = validValues;
+        break;
+      case 'explicitNull':
+        response["outputs"] = explicitNull;
+        break;
+      case 'missingProperty':
+        response["outputs"] = missingProperty;
+        break;
+      default:
+        response["outputs"] = validValues;
+    }
+  }
+  else {
+    response["outputs"] = validValues;
+  }
 
   res.json(response);
 });

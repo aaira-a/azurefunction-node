@@ -806,6 +806,156 @@ describe('POST /api/all-types-odata', () => {
 
 });
 
+
+describe('GET /api/all-types-nullable', () => {
+
+  beforeEach(() => {
+    this.validValues = {
+      "textOutput": "primitive text 1",
+      "decimalOutput": 111,
+      "integerOutput": 123456.789,
+      "booleanOutput": true,
+      "datetimeOutput": "2021-02-01T17:28:18.686Z",
+      "fileOutput": {
+          "fileContent": "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACESURBVEhL7Y5BCsAwCATz/0+nYpZSkLoaTOnBOaRKNzsZ8zAtoLSAkhaMkbuSTCtYYiTSq13AHiMnuM84O4KUIxp9ltYL9NGHBZgU1UUdOwKhXmDBPwbP2a4lELC7kJDT8oUg4vAStKJAgOkFfQDL4GuIXBZozBNgYvxVUEULKC0gzHkBuvRcP4Oq7bUAAAAASUVORK5CYII=",
+          "originalName": "CharA.png",
+          "mimeType": "image/png",
+          "md5": "8ccae3f262fbd8747735395a556229f7",
+          "size": 239
+      },
+      "textCollectionOutput": ["abc", "def", "ghi"],
+      "decimalCollectionOutput": [1.1, 2.2, 3.3],
+      "integerCollectionOutput": [4, 5, 6],
+      "booleanCollectionOutput": [true, false, true],
+      "datetimeCollectionOutput": [
+        "2021-02-01T17:23:56.139Z",
+        "2022-02-01T17:23:56.139Z",
+        "2023-02-01T17:23:56.139Z",
+      ],
+        "fileCollectionOutput": [
+          "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACySURBVEhL7ZPRDoAgCEW1//9nY+GYS5QL07VV5yVrdY8I5VJK2slRr9v4BSZKk3POdaXhHYqhYBTU6hGZLoC+nO5DiPcA2QTx2TGlBoCtcgs4mhbre9BGg+kENKaSy7cujAquTcfTCb2CuuoIaKAjYkTs0jiaTLkcPSmxxz2mrMEdboEAOoICPiuEeAUgDwnM88WbDP1o6jtgG+wfTXzykJ/EBSq3ssCvCFQQ5q1juoyUTo3XchvVQmDSAAAAAElFTkSuQmCC",
+          "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACVSURBVEhL7ZXBDsAgCENl///PromeDKKRgsmyd9lO7VqRSa21RPL0Zxi/wZKtQxaR/qZhK6wNmvrxsC0qcqoDy8CvDqYGFHVgJfCrg/Ax1Q3QD+XzwY0E7XhZ6AlY/YD0irj9ACUBsR+QXhGd0QD9ZIwpEd2AGELfOYOBZ652f5ngzGZ3axql2Qq0tTzjexeNTrBBKS/XbjwlavjApAAAAABJRU5ErkJggg==",
+          "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAC7SURBVFhH7ZfRCoAgDEW1///n6oIDsXRX3RDKA1EP5Y7XJRXPm7CQI52XsQXUHogxpqsnFu1DCdRuyeVGZaaWAEXlgEwrrRpmPZCL9GDehL1puLwFkACMRFMAA8hgvbDPuSQgMD3hKsDwD4HWMrgLaM34/SXQXmVXgemNyIJlPcDuoi4CTPSCWwLM7IGpAGbORi+YCUjsPcWBicBocWCWwEhx0PwqLtdTZloyWhyoAiUzxd7YP6eLBUK4ACJ7Yx0sF/V/AAAAAElFTkSuQmCC",
+      ],
+      "ObjectCollectionOutput": [
+        {
+          "textOutput": "obj1",
+          "decimalOutput": 7.7,
+          "integerOutput": -1,
+          "booleanOutput": true,
+          "datetimeOutput": "2025-02-01T17:23:56.139Z",
+          "fileOutput": {
+              "fileContent": "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAACZSURBVFhH7ZbdCoAwCEZn7//OlTAhqum3H1kjz826cO6AP0T7SZrIls9phADcA0SUv570tFGVwFuoJsZY6SGB0uMjiCb8voBn/ZkoQQiYi8hrBQuQQCnEWsOC9kSXAIJ1370HLPk1pgCtdQumQE/9EdYogSchYArIBNROAscjd+C/YkZLeE0jcUjqKgGNuxyadphAK3+fgpQO3X9VGPJG2gMAAAAASUVORK5CYII=",
+              "originalName": "CharE.png",
+              "mimeType": "image/png",
+              "md5": "66da72ec3afafceb2a9caa73c8cacc8a",
+              "size": 260
+          }
+        },
+        {
+          "textOutput": "obj2",
+          "decimalOutput": 8.8,
+          "integerOutput": -2,
+          "booleanOutput": true,
+          "datetimeOutput": "2026-02-01T17:23:56.139Z",
+          "fileOutput": {
+              "fileContent": "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAB5SURBVFhH7dTRCoAgDIXhrfd/50o0kGHNsckMzn9TF1If6OTzjhI72jMtANIB6iFk5vZWiz6zU4B+STTIDJBJUGkEfvvGJ0D7+SgNJAsHWMMYAgCA+SqWecd0yU34NINzA7zhEO4PKPuvTYInbAEA/wDgJlxZMoDoAgqtURHjBSxIAAAAAElFTkSuQmCC",
+              "originalName": "CharF.png",
+              "mimeType": "image/png",
+              "md5": "add944ee2cd04a8af5d1bc6c54a2e9b3",
+              "size": 228
+          }
+        }
+      ]
+    };
+
+    this.explicitNull = {
+      "textOutput": null,
+      "decimalOutput": null,
+      "integerOutput": null,
+      "booleanOutput": null,
+      "datetimeOutput": null,
+      "fileOutput": null,
+      "textCollectionOutput": null,
+      "decimalCollectionOutput": null,
+      "integerCollectionOutput": null,
+      "booleanCollectionOutput": null,
+      "datetimeCollectionOutput": null,
+      "fileCollectionOutput": null,
+      "ObjectCollectionOutput": null
+    };
+
+    this.missingProperty = {};
+  });
+
+  it('should return hardcoded validValues json response by default', () => {
+    return request(app)
+      .get('/api/all-types-nullable')
+      .set('Content-Type', 'application/json')
+      .send()
+      .then((response) => {
+        expect(response.headers['content-type']).to.include('application/json');
+        expect(response.body['outputs']).to.eql(this.validValues);
+      })
+  });  
+
+  it('should return hardcoded validValues json response if querystring is validValues', () => {
+    return request(app)
+      .get('/api/all-types-nullable?expected=validValues')
+      .set('Content-Type', 'application/json')
+      .send()
+      .then((response) => {
+        expect(response.headers['content-type']).to.include('application/json');
+        expect(response.body['outputs']).to.eql(this.validValues);
+      })
+  });  
+
+  it('should return hardcoded validValues json response if querystring is empty string', () => {
+    return request(app)
+      .get('/api/all-types-nullable?expected=')
+      .set('Content-Type', 'application/json')
+      .send()
+      .then((response) => {
+        expect(response.headers['content-type']).to.include('application/json');
+        expect(response.body['outputs']).to.eql(this.validValues);
+      })
+  });
+
+  it('should return hardcoded validValues json response if querystring not matching', () => {
+    return request(app)
+      .get('/api/all-types-nullable?expected=doesntexist')
+      .set('Content-Type', 'application/json')
+      .send()
+      .then((response) => {
+        expect(response.headers['content-type']).to.include('application/json');
+        expect(response.body['outputs']).to.eql(this.validValues);
+      })
+  });  
+
+  it('should return hardcoded explicitNull json response if querystring is explicitNull', () => {
+    return request(app)
+      .get('/api/all-types-nullable?expected=explicitNull')
+      .set('Content-Type', 'application/json')
+      .send()
+      .then((response) => {
+        expect(response.headers['content-type']).to.include('application/json');
+        expect(response.body['outputs']).to.eql(this.explicitNull);
+      })
+  });  
+
+  it('should return hardcoded empty object json response if querystring is missingProperty', () => {
+    return request(app)
+      .get('/api/all-types-nullable?expected=missingProperty')
+      .set('Content-Type', 'application/json')
+      .send()
+      .then((response) => {
+        expect(response.headers['content-type']).to.include('application/json');
+        expect(response.body['outputs']).to.eql(this.missingProperty);
+      })
+  });  
+
+});
+
 describe('POST /api/all-parameter-types/:string_path/:integer_path/:boolean_path', () => {
   
   it('should return all parameters in output', () => {

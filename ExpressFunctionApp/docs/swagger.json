@@ -1137,6 +1137,35 @@
         }
       }
     },
+    "/all-types-nullable": {
+      "get": {
+        "summary": "GET all variable types with null value",
+        "description": "GET all variable types with null value",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "expected",
+            "description": "Expected data to be returned",
+            "required": false,
+            "type": "string",
+            "default": "validValues",
+            "enum": [
+              "validValues",
+              "explicitNull",
+              "missingProperty"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/allTypesNullableOutputsObject"
+            }
+          }
+        }
+      }
+    },
     "/all-parameter-types/{string-path}/{integer-path}/{boolean-path}": {
       "post": {
         "summary": "POST all parameter types",
@@ -1672,6 +1701,193 @@
                   "x-ntx-summary": "Hardcoded array as string type"
                 }
               }
+            }
+          }
+        }
+      }
+    },
+    "allTypesNullableOutputsObject": {
+      "type": "object",
+      "properties": {
+        "outputs": {
+          "type": "object",
+          "properties": {
+            "textOutput": {
+              "type": "string",
+              "description": "Text Output",
+              "x-ntx-summary": "Text Output"
+            },
+            "decimalOutput": {
+              "type": "number",
+              "description": "Decimal Output",
+              "x-ntx-summary": "Decimal Output"
+            },
+            "integerOutput": {
+              "type": "integer",
+              "description": "Integer Output",
+              "x-ntx-summary": "Integer Output"
+            },
+            "booleanOutput": {
+              "type": "boolean",
+              "description": "Boolean Output",
+              "x-ntx-summary": "Boolean Output"
+            },
+            "datetimeOutput": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Datetime Output",
+              "x-ntx-summary": "Datetime Output"
+            },
+            "fileOutput": {
+              "type": "object",
+              "properties": {
+                "fileContent": {
+                  "type": "string",
+                  "format": "byte"
+                },
+                "originalName": {
+                  "type": "string",
+                  "description": "Original file name Output",
+                  "x-ntx-summary": "Original file name Output"
+                },
+                "mimeType": {
+                  "type": "string",
+                  "description": "MIME type Output",
+                  "x-ntx-summary": "MIME type Output"
+                },
+                "md5": {
+                  "type": "string",
+                  "description": "MD5 Output",
+                  "x-ntx-summary": "MD5 Output"
+                },
+                "size": {
+                  "type": "integer",
+                  "description": "File size Output",
+                  "x-ntx-summary": "File size Output"
+                }
+              }
+            },
+            "textCollectionOutput": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Text Collection Item Output"
+              },
+              "description": "Text Collection Output",
+              "x-ntx-summary": "Text Collection Output"
+            },
+            "decimalCollectionOutput": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "description": "Decimal Collection Item Output"
+              },
+              "description": "Decimal Collection Output",
+              "x-ntx-summary": "Decimal Collection Output"
+            },
+            "integerCollectionOutput": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "description": "Integer Collection Item Output"
+              },
+              "description": "Integer Collection Output",
+              "x-ntx-summary": "Integer Collection Output"
+            },
+            "booleanCollectionOutput": {
+              "type": "array",
+              "items": {
+                "type": "boolean",
+                "description": "Boolean Collection Item Output"
+              },
+              "description": "Boolean Collection Output",
+              "x-ntx-summary": "Boolean Collection Output"
+            },
+            "datetimeCollectionOutput": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Datetime Collection Item Output"
+              },
+              "description": "Datetime Collection Output",
+              "x-ntx-summary": "Datetime Collection Output"
+            },
+            "fileCollectionOutput": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "byte",
+                "description": "File Collection Item Output"
+              },
+              "description": "File Collection Output",
+              "x-ntx-summary": "File Collection Output"
+            },
+            "ObjectCollectionOutput": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "textOutput": {
+                    "type": "string",
+                    "description": "Text Output",
+                    "x-ntx-summary": "Text Output"
+                  },
+                  "decimalOutput": {
+                    "type": "number",
+                    "description": "Decimal Output",
+                    "x-ntx-summary": "Decimal Output"
+                  },
+                  "integerOutput": {
+                    "type": "integer",
+                    "description": "Integer Output",
+                    "x-ntx-summary": "Integer Output"
+                  },
+                  "booleanOutput": {
+                    "type": "boolean",
+                    "description": "Boolean Output",
+                    "x-ntx-summary": "Boolean Output"
+                  },
+                  "datetimeOutput": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Datetime Output",
+                    "x-ntx-summary": "Datetime Output"
+                  },
+                  "fileOutput": {
+                    "type": "object",
+                    "properties": {
+                      "fileContent": {
+                        "type": "string",
+                        "format": "byte"
+                      },
+                      "originalName": {
+                        "type": "string",
+                        "description": "Original file name Output",
+                        "x-ntx-summary": "Original file name Output"
+                      },
+                      "mimeType": {
+                        "type": "string",
+                        "description": "MIME type Output",
+                        "x-ntx-summary": "MIME type Output"
+                      },
+                      "md5": {
+                        "type": "string",
+                        "description": "MD5 Output",
+                        "x-ntx-summary": "MD5 Output"
+                      },
+                      "size": {
+                        "type": "integer",
+                        "description": "File size Output",
+                        "x-ntx-summary": "File size Output"
+                      }
+                    }
+                  }
+                },
+                "description": "Object Collection Item Output"
+              },
+              "description": "Object Collection Output",
+              "x-ntx-summary": "Object Collection Output"
             }
           }
         }
