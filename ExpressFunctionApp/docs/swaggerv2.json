@@ -1212,8 +1212,8 @@
     },
     "/all-types-nullable": {
       "get": {
-        "summary": "GET all variable types with null value",
-        "description": "GET all variable types with null value",
+        "summary": "GET all variable types with nullable value",
+        "description": "GET all variable types with nullable value",
         "parameters": [
           {
             "in": "query",
@@ -1234,6 +1234,35 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/allTypesNullableOutputsObject"
+            }
+          }
+        }
+      }
+    },
+    "/file-nullable": {
+      "get": {
+        "summary": "GET base64 file with nullable value",
+        "description": "GET base64 file with nullable value",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "expected",
+            "description": "Expected data to be returned",
+            "required": false,
+            "type": "string",
+            "default": "validValues",
+            "enum": [
+              "validValues",
+              "explicitNull",
+              "missingProperty"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/base64FileNullableOutputsObject"
             }
           }
         }
@@ -1819,35 +1848,6 @@
               "description": "Datetime Output",
               "x-ntx-summary": "Datetime Output"
             },
-            "fileOutput": {
-              "type": "object",
-              "properties": {
-                "fileContent": {
-                  "type": "string",
-                  "format": "byte"
-                },
-                "originalName": {
-                  "type": "string",
-                  "description": "Original file name Output",
-                  "x-ntx-summary": "Original file name Output"
-                },
-                "mimeType": {
-                  "type": "string",
-                  "description": "MIME type Output",
-                  "x-ntx-summary": "MIME type Output"
-                },
-                "md5": {
-                  "type": "string",
-                  "description": "MD5 Output",
-                  "x-ntx-summary": "MD5 Output"
-                },
-                "size": {
-                  "type": "integer",
-                  "description": "File size Output",
-                  "x-ntx-summary": "File size Output"
-                }
-              }
-            },
             "textCollectionOutput": {
               "type": "array",
               "items": {
@@ -1894,16 +1894,6 @@
               "description": "Datetime Collection Output",
               "x-ntx-summary": "Datetime Collection Output"
             },
-            "fileCollectionOutput": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "format": "byte",
-                "description": "File Collection Item Output"
-              },
-              "description": "File Collection Output",
-              "x-ntx-summary": "File Collection Output"
-            },
             "ObjectCollectionOutput": {
               "type": "array",
               "items": {
@@ -1934,7 +1924,67 @@
                     "format": "date-time",
                     "description": "Datetime Output",
                     "x-ntx-summary": "Datetime Output"
-                  },
+                  }
+                },
+                "description": "Object Collection Item Output"
+              },
+              "description": "Object Collection Output",
+              "x-ntx-summary": "Object Collection Output"
+            }
+          }
+        }
+      }
+    },
+    "base64FileNullableOutputsObject": {
+      "type": "object",
+      "properties": {
+        "outputs": {
+          "type": "object",
+          "properties": {
+            "fileOutput": {
+              "type": "object",
+              "properties": {
+                "fileContent": {
+                  "type": "string",
+                  "format": "byte"
+                },
+                "originalName": {
+                  "type": "string",
+                  "description": "Original file name Output",
+                  "x-ntx-summary": "Original file name Output"
+                },
+                "mimeType": {
+                  "type": "string",
+                  "description": "MIME type Output",
+                  "x-ntx-summary": "MIME type Output"
+                },
+                "md5": {
+                  "type": "string",
+                  "description": "MD5 Output",
+                  "x-ntx-summary": "MD5 Output"
+                },
+                "size": {
+                  "type": "integer",
+                  "description": "File size Output",
+                  "x-ntx-summary": "File size Output"
+                }
+              }
+            },
+            "fileCollectionOutput": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "byte",
+                "description": "File Collection Item Output"
+              },
+              "description": "File Collection Output",
+              "x-ntx-summary": "File Collection Output"
+            },
+            "ObjectCollectionOutput": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
                   "fileOutput": {
                     "type": "object",
                     "properties": {
