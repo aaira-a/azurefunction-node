@@ -812,8 +812,8 @@ describe('GET /api/all-types-nullable', () => {
   beforeEach(() => {
     this.validValues = {
       "textOutput": "primitive text 1",
-      "decimalOutput": 111,
-      "integerOutput": 123456.789,
+      "decimalOutput": 123456.789,
+      "integerOutput": 111,
       "booleanOutput": true,
       "datetimeOutput": "2021-02-01T17:28:18.686Z",
       "textCollectionOutput": ["abc", "def", "ghi"],
