@@ -1572,8 +1572,13 @@
                 },
                 "resultStatus": {
                   "type": "string",
-                  "description": "Status to be returned in result",
-                  "x-ntx-summary": "Status to be returned in result"
+                  "description": "Status to be returned in querystring",
+                  "x-ntx-summary": "Status to be returned in querystring"
+                },
+                "payloadStatus": {
+                  "type": "string",
+                  "description": "Status to be returned in respose body",
+                  "x-ntx-summary": "Status to be returned in respose body"
                 },
                 "errorMessage": {
                   "type": "string",
@@ -2127,10 +2132,15 @@
             },
             "actualResultStatus": {
               "type": "string",
-              "description": "Actual Result Status",
-              "x-ntx-summary": "Actual Result Status"
+              "description": "Status returned as querystring",
+              "x-ntx-summary": "Status returned as querystring"
             }
           }
+        },
+        "status": {
+          "type": "string",
+          "description": "Status returned as payload property",
+          "x-ntx-summary": "Status returned as payload property"
         }
       }
     }

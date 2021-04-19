@@ -1290,6 +1290,17 @@ describe('POST /api/async-callback', () => {
       })
   });
 
+  it('should return status as payload', () => {
+    return request(app)
+      .post('/api/async-callback')
+      .set('Content-Type', 'application/json')
+      .send({'payloadStatus': 'efg'})
+      .then((response) => {
+        expect(response.status).to.eql(202);
+        expect(response.body['status']).to.eql('efg')
+      })
+  });
+
   it('should return result status if supplied in request', () => {
     return request(app)
       .post('/api/async-callback')
