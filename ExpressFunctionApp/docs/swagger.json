@@ -2057,9 +2057,14 @@
           }
         },
         "status": {
-          "type": "string",
-          "description": "Status returned as payload property",
-          "x-ntx-summary": "Status returned as payload property"
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "Status returned as payload property",
+              "x-ntx-summary": "Status returned as payload property"
+            }
+          }
         }
       }
     }

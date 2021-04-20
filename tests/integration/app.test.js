@@ -1297,7 +1297,7 @@ describe('POST /api/async-callback', () => {
       .send({'payloadStatus': 'efg'})
       .then((response) => {
         expect(response.status).to.eql(202);
-        expect(response.body['status']).to.eql('efg')
+        expect(response.body['status']['status']).to.eql('efg')
       })
   });
 

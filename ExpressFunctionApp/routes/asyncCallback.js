@@ -27,7 +27,8 @@ module.exports = {
     
     response["outputs"]["callbackUrl"] = baseCallbackUrl;
 
-    response["status"] = req.body["payloadStatus"];
+    response["status"] = {};
+    response["status"]["status"] = req.body["payloadStatus"];
 
     if (req.hasOwnProperty("body") && 
         req["body"].hasOwnProperty("resultStatus") &&
