@@ -21,7 +21,7 @@
     "azure-aws-serverless-express-aa": "https://github.com/azam-a/azure-aws-serverless-express.git#x-ms-privatelink-id-fix",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "file-type": "^14.1.4",
+    "file-type": "^16.5.4",
     "jsonfile": "^5.0.0",
     "multer": "^1.4.2",
     "uuid": "^3.4.0"
