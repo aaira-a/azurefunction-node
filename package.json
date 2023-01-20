@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/azam-a/azurefunction-node#readme",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "azure-aws-serverless-express-aa": "https://github.com/azam-a/azure-aws-serverless-express.git#x-ms-privatelink-id-fix",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
